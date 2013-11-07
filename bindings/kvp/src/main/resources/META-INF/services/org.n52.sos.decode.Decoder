@@ -1,0 +1,2 @@
+org.n52.wfs.decode.kvp.v20.GetCapabilitiesKvpDecoder
+org.n52.wfs.decode.kvp.v20.GetFeatureKvpDecoder

@@ -1,0 +1,25 @@
+RELEASE NOTES
+
+ The Sensor Observation Service (SOS) aggregates readings from live sensors as well as 
+ sensor archives. The service provides an interface to get the pure data (encoded 
+ in Observation&Measurement), information about the sensor itself (encoded in a 
+ SensorML instance document), and information about the sensor mounting platform 
+ (SensorML as well).
+ 
+  Changes since last release
+==================================
+ 
+ --- New features ---
+ 
+    
+ 
+ --- Changes ---
+    
+    
+     
+ --- Fixed bugs ---
+ 
+
+
+For more detailed information about the bugs look at https://52north.org/bugzilla/
+
