@@ -35,13 +35,13 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.config.annotation.Configurable;
 import org.n52.sos.config.annotation.Setting;
 import org.n52.sos.decode.Decoder;
 import org.n52.sos.ds.FeatureQuerySettingsProvider;
 import org.n52.sos.exception.ConfigurationException;
 import org.n52.sos.exception.ows.InvalidParameterValueException;
+import org.n52.sos.ogc.filter.FesSortBy;
 import org.n52.sos.ogc.filter.Filter;
 import org.n52.sos.ogc.filter.FilterConstants;
 import org.n52.sos.ogc.filter.FilterConstants.SpatialOperator;
@@ -59,6 +59,7 @@ import org.n52.sos.util.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Configurable
@@ -71,6 +72,8 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
     private int defaultEPSG;
 
     private int default3DEPSG;
+
+    private static final String PARANTHESES = Constants.CLOSE_BRACE_STRING + Constants.OPEN_BRACE_STRING;
 
     @Override
     public Set<String> getConformanceClasses() {
@@ -131,7 +134,7 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
         return namespaces;
     }
 
-    protected Map<String, WfsConstants.SortOrder> parseSortBy(List<String> sortByList) {
+    protected FesSortBy parseSortBy(List<String> sortByList) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -189,10 +192,26 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
     }
 
     protected Filter<?> parseFilter(String filterString, String filterLanguage) throws OwsExceptionReport {
-        if (StringHelper.isNotEmpty(filterLanguage) && !FilterConstants.FILTER_LANGUAGE_FES_FILTER.equals(filterLanguage)) {
-                // TODO throw not supported language
+        if (StringHelper.isNotEmpty(filterLanguage)
+                && !FilterConstants.FILTER_LANGUAGE_FES_FILTER.equals(filterLanguage)) {
+            // TODO throw not supported language
         }
         // TODO does this work or call explicit FES decoder
-        return (Filter<?>)CodingHelper.decodeXmlObject(filterString);
+        return (Filter<?>) CodingHelper.decodeXmlObject(filterString);
+    }
+
+    protected List<String> parseJoinQueries(String value) {
+        if (StringHelper.isNotEmpty(value)) {
+            if (value.contains(PARANTHESES)) {
+                List<String> list = Lists.newArrayList();
+                for (String split : value.split(PARANTHESES)) {
+                    list.add(split.replace(Constants.OPEN_BRACE_STRING, Constants.EMPTY_STRING).replace(
+                            Constants.CLOSE_BRACE_STRING, Constants.EMPTY_STRING));
+                }
+                return list;
+            }
+            return Lists.newArrayList(value);
+        }
+        return Lists.newArrayList();
     }
 }

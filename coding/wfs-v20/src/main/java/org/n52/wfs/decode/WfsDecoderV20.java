@@ -79,5 +79,5 @@ public class WfsDecoderV20 implements Decoder<AbstractServiceCommunicationObject
         // TODO Auto-generated method stub
         return null;
     }
-
+    
 }

@@ -117,10 +117,6 @@ public interface WfsConstants {
         StoredQuery_Id
     }
     
-    enum SortOrder {
-        ASC, DESC
-    }
-
     public enum State {
         valid, superseded, retired, future
     }
