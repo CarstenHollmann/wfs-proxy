@@ -26,14 +26,28 @@ package org.n52.ogc.wfs;
 import org.n52.ogc.wfs.WfsConstants.State;
 import org.n52.sos.ogc.om.OmObservation;
 
+/**
+ * Concrete class of WFS member for OmObservation
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class OmObservationMember implements WfsMember<OmObservation> {
-    
+
     private State state;
-    
+
     private OmObservation observation;
-    
-    public OmObservationMember(OmObservation observattion) {
-        this.observation = observattion;
+
+    /**
+     * constructor
+     * 
+     * @param observation
+     *            Required observation
+     */
+    public OmObservationMember(OmObservation observation) {
+        this.observation = observation;
     }
 
     @Override
@@ -53,7 +67,7 @@ public class OmObservationMember implements WfsMember<OmObservation> {
 
     @Override
     public void setEelement(OmObservation element) {
-       this.observation = element;
+        this.observation = element;
     }
 
 }

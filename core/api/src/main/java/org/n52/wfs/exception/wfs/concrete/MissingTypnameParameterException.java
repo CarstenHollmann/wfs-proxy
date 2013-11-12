@@ -27,15 +27,20 @@ import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.exception.ows.MissingParameterValueException;
 
 /**
+ * Concrete exception class of MissingParameterValue exception for typeName parameter
+ * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
+ * @since 1.0.0
  *
  */
 public class MissingTypnameParameterException extends MissingParameterValueException {
 
     private static final long serialVersionUID = 4610386959061666748L;
     
+    /**
+     * constructor
+     */
     public MissingTypnameParameterException() {
         super(WfsConstants.AdHocQueryParams.TypeNames.name());
     }

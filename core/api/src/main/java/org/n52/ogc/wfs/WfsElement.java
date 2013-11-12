@@ -27,19 +27,33 @@ import javax.xml.namespace.QName;
 
 import org.n52.sos.ogc.ows.OwsMetadata;
 
+/**
+ * Class for WFS element element
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class WfsElement {
-    
+
     private String name;
-    
+
     private QName type;
-    
+
     private OwsMetadata metadata;
-    
+
     private WfsValueList valueList;
 
     /**
      * @param name
+     *            Require name
      * @param type
+     *            Required type
+     * @param metadata
+     *            Required metadata
+     * @param valueList
+     *            Required value list
      */
     public WfsElement(String name, QName type, OwsMetadata metadata, WfsValueList valueList) {
         super();
@@ -50,6 +64,8 @@ public class WfsElement {
     }
 
     /**
+     * Get the name
+     * 
      * @return the name
      */
     public String getName() {
@@ -57,6 +73,8 @@ public class WfsElement {
     }
 
     /**
+     * Get the type
+     * 
      * @return the type
      */
     public QName getType() {
@@ -64,6 +82,8 @@ public class WfsElement {
     }
 
     /**
+     * Get the metadata
+     * 
      * @return the metadata
      */
     public OwsMetadata getMetadata() {
@@ -71,6 +91,8 @@ public class WfsElement {
     }
 
     /**
+     * Get the value list
+     * 
      * @return the valueList
      */
     public WfsValueList getValueList() {

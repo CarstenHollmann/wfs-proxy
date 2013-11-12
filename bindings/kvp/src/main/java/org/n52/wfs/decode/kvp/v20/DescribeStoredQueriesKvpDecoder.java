@@ -42,6 +42,14 @@ import org.n52.sos.util.KvpHelper;
 import org.n52.sos.util.http.MediaTypes;
 import org.n52.wfs.request.DescribeStoredQueriesRequest;
 
+/**
+ * WFS 2.0 DescribeStoredQueries request encoder for KVP binding
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class DescribeStoredQueriesKvpDecoder extends AbstractWfsKvpDecoder {
 
     private static final DecoderKey KVP_DECODER_KEY_TYPE = new OperationDecoderKey(WfsConstants.WFS,
@@ -78,10 +86,11 @@ public class DescribeStoredQueriesKvpDecoder extends AbstractWfsKvpDecoder {
 
                 } // namespaces (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdditionalCommonKeywordsParams.Namespaces.name())) {
-                    request.setNamespaces(parseNamespaces(parameterName));
-                }
-
-                else {
+                    request.setNamespaces(parseNamespaces(parameterValues));
+                } else if (parameterName.equalsIgnoreCase(WfsConstants.StoredQueryParams.StoredQuery_Id.name())) {
+                    request.setStoredQueryIds(KvpHelper.checkParameterMultipleValues(parameterValues,
+                            WfsConstants.StoredQueryParams.StoredQuery_Id));
+                } else {
                     exceptions.add(new ParameterNotSupportedException(parameterName));
                 }
             } catch (OwsExceptionReport owse) {

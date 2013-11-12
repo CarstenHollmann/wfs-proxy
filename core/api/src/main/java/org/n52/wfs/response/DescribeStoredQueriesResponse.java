@@ -32,8 +32,16 @@ import org.n52.sos.util.CollectionHelper;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Class represents a WFS DescribeStoredQueries response
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class DescribeStoredQueriesResponse extends AbstractServiceResponse {
-    
+
     /* 0..* */
     private Set<StoredQueryDescription> storedQueryDescriptions = Sets.newHashSet();
 
@@ -42,20 +50,44 @@ public class DescribeStoredQueriesResponse extends AbstractServiceResponse {
         return WfsConstants.Operations.DescribeStoredQueries.name();
     }
 
+    /**
+     * Get stored queries descriptions
+     * 
+     * @return the stored queries descriptions
+     */
     public Set<StoredQueryDescription> getStoredQueryDescriptions() {
         return storedQueryDescriptions;
     }
 
+    /**
+     * Add a stored query description
+     * 
+     * @param storedQueryDescription
+     *            Stored query description to add
+     * @return DescribeStoredQueriesResponse
+     */
     public DescribeStoredQueriesResponse addStoredQueryDescriptions(StoredQueryDescription storedQueryDescription) {
         getStoredQueryDescriptions().add(storedQueryDescription);
         return this;
     }
-    
+
+    /**
+     * Add a stored query descriptions
+     * 
+     * @param storedQueryDescriptions
+     *            Stored query descriptions to add
+     * @return DescribeStoredQueriesResponse
+     */
     public DescribeStoredQueriesResponse setStoredQueryDescriptions(Set<StoredQueryDescription> storedQueryDescriptions) {
         getStoredQueryDescriptions().addAll(storedQueryDescriptions);
         return this;
     }
-    
+
+    /**
+     * Check if stored query description are set
+     * 
+     * @return <code>true</code>, if stored query description are set
+     */
     public boolean isSetStoredQueryDescriptions() {
         return CollectionHelper.isNotEmpty(getStoredQueryDescriptions());
     }

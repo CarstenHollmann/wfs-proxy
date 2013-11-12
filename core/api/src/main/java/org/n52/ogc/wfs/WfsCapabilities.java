@@ -32,6 +32,14 @@ import org.n52.sos.ogc.filter.FilterCapabilities;
 import org.n52.sos.ogc.ows.OwsCapabilities;
 import org.n52.sos.util.CollectionHelper;
 
+/**
+ * Class for WFS capabilities
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class WfsCapabilities extends OwsCapabilities {
 
     /**
@@ -76,6 +84,11 @@ public class WfsCapabilities extends OwsCapabilities {
         this.filterCapabilities = filterCapabilities;
     }
 
+    /**
+     * Check if filter capabilities are set
+     * 
+     * @return <code>true</code>, if filter capabilities are set
+     */
     public boolean isSetFilterCapabilities() {
         return getFilterCapabilities() != null;
     }
@@ -100,6 +113,11 @@ public class WfsCapabilities extends OwsCapabilities {
                 featureTypeList == null ? new TreeSet<WfsFeatureType>() : new TreeSet<WfsFeatureType>(featureTypeList);
     }
 
+    /**
+     * Check if feature type list is set
+     * 
+     * @return <code>true</code>, if feature type list is set
+     */
     public boolean isSetFeatureTypeList() {
         return CollectionHelper.isNotEmpty(getFeatureTypeList());
     }

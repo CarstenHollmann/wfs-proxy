@@ -32,16 +32,18 @@ import org.n52.sos.ogc.filter.AbstractProjectionClause;
  * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since
- *
+ * @since 1.0.0
+ * 
  */
 public class WfsPropertyName extends StandardResolveParameters implements AbstractProjectionClause {
-    
+
     private QName qName;
-    
+
     private String resolvePath;
 
     /**
+     * Get QName
+     * 
      * @return the qName
      */
     public QName getqName() {
@@ -49,7 +51,11 @@ public class WfsPropertyName extends StandardResolveParameters implements Abstra
     }
 
     /**
-     * @param qName the qName to set
+     * Set QName
+     * 
+     * @param qName
+     *            the qName to set
+     * @return WfsPropertyName
      */
     public WfsPropertyName setqName(QName qName) {
         this.qName = qName;
@@ -57,6 +63,8 @@ public class WfsPropertyName extends StandardResolveParameters implements Abstra
     }
 
     /**
+     * Get resolve path
+     * 
      * @return the resolvePath
      */
     public String getResolvePath() {
@@ -64,7 +72,11 @@ public class WfsPropertyName extends StandardResolveParameters implements Abstra
     }
 
     /**
-     * @param resolvePath the resolvePath to set
+     * Set resolve path
+     * 
+     * @param resolvePath
+     *            the resolvePath to set
+     * @return WfsPropertyName
      */
     public WfsPropertyName setResolvePath(String resolvePath) {
         this.resolvePath = resolvePath;

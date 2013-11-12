@@ -41,46 +41,146 @@ import org.n52.sos.w3c.SchemaLocation;
 
 import com.google.common.collect.Sets;
 
+/**
+ * WFS 2.0 abstract response encoder class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public abstract class AbstractWfsResponseEncoder<T extends AbstractServiceResponse> extends AbstractResponseEncoder<T> {
-    
+
+    /**
+     * constructor
+     * 
+     * @param operation
+     *            Operation name
+     * @param responseType
+     *            Implemented response class
+     */
     public AbstractWfsResponseEncoder(String operation, Class<T> responseType) {
-        super(WfsConstants.WFS, WfsConstants.VERSION, operation, WfsConstants.NS_WFS_20,
-                WfsConstants.NS_WFS_PREFIX, responseType);
+        super(WfsConstants.WFS, WfsConstants.VERSION, operation, WfsConstants.NS_WFS_20, WfsConstants.NS_WFS_PREFIX,
+                responseType);
     }
 
     @Override
     protected Set<SchemaLocation> getConcreteSchemaLocations() {
         return Sets.newHashSet(WfsConstants.WFS_SCHEMA_LOCATION);
     }
-    
+
+    /**
+     * Encode service object to GML 3.2 XML object
+     * 
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeGml(Object o) throws OwsExceptionReport {
         return encodeObjectToXml(GmlConstants.NS_GML_32, o);
     }
 
+    /**
+     * Encode service object to GML 3.2 XML object
+     * 
+     * @param helperValues
+     *            Additional values, e.g. to indicate to encode as Document or
+     *            PropertyType
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeGml(Map<HelperValues, String> helperValues, Object o) throws OwsExceptionReport {
         return encodeObjectToXml(GmlConstants.NS_GML_32, o, helperValues);
     }
 
+    /**
+     * Encode service object to OWS 1.1.0 XML object
+     * 
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeOws(Object o) throws OwsExceptionReport {
         return encodeObjectToXml(OWSConstants.NS_OWS, o);
     }
 
+    /**
+     * Encode service object to OWS 1.1.0 XML object
+     * 
+     * @param helperValues
+     *            Additional values, e.g. to indicate to encode as Document or
+     *            PropertyType
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeOws(Map<HelperValues, String> helperValues, Object o) throws OwsExceptionReport {
         return encodeObjectToXml(OWSConstants.NS_OWS, o, helperValues);
     }
 
+    /**
+     * Encode service object to FES 2.0 XML object
+     * 
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeFes(Object o) throws OwsExceptionReport {
         return encodeObjectToXml(FilterConstants.NS_FES_2, o);
     }
 
+    /**
+     * Encode service object to FES 2.0 XML object
+     * 
+     * @param helperValues
+     *            Additional values, e.g. to indicate to encode as Document or
+     *            PropertyType
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeFes(Map<HelperValues, String> helperValues, Object o) throws OwsExceptionReport {
         return encodeObjectToXml(FilterConstants.NS_FES_2, o, helperValues);
     }
 
+    /**
+     * Encode service object to SWE Common 2.0 XML object
+     * 
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeSwe(Object o) throws OwsExceptionReport {
         return encodeObjectToXml(SweConstants.NS_SWE_20, o);
     }
 
+    /**
+     * Encode service object to SWE Common 2.0 XML object
+     * 
+     * @param helperValues
+     *            Additional values, e.g. to indicate to encode as Document or
+     *            PropertyType
+     * @param o
+     *            Service object to encode
+     * @return XML encoded object
+     * @throws OwsExceptionReport
+     *             If an error occurs
+     */
     protected XmlObject encodeSwe(Map<HelperValues, String> helperValues, Object o) throws OwsExceptionReport {
         return encodeObjectToXml(SweConstants.NS_SWE_20, o, helperValues);
     }

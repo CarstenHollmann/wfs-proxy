@@ -11,7 +11,15 @@ RELEASE NOTES
  
  --- New features ---
  
-    
+
+	* Supported operations: GetCapabilities, GetFeature, DescribeFeatureType, DescribeStoredQueries, ListStoredQueries
+	* GetFeature: 
+		* necessary filters are supported to simulate a SOS GetObservation request
+		* temporal filter: equals and during for valueReference = om:phenomenonTime
+		* spatial filter: bbox for valueReference = sams:shape, om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape, om:featureOfInterest/*/sams:shape
+		* comparison filter: PropertyIsEqualTo for valueReference = om:procedure, om:observedProperty, om:featureOfInterest
+		* typeName: om:Observation
+    * DescribeFeatureType: om:Observation -> O&M 2.0 observation.xsd
  
  --- Changes ---
     

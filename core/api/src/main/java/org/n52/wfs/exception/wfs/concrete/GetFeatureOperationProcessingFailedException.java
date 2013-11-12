@@ -27,15 +27,20 @@ import org.n52.ogc.wfs.WfsConstants;
 import org.n52.wfs.exception.wfs.OperationProcessingFailedException;
 
 /**
+ * Concrete exception class of OperationProcessingFailed exception for GetFeature operation
+ * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
+ * @since 1.0.0
  *
  */
 public class GetFeatureOperationProcessingFailedException extends OperationProcessingFailedException {
 
     private static final long serialVersionUID = -346876960731715216L;
     
+    /**
+     * constructor
+     */
     public GetFeatureOperationProcessingFailedException() {
         super();
         at(WfsConstants.Operations.GetFeature);

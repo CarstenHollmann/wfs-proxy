@@ -45,15 +45,18 @@ import org.n52.sos.exception.ows.VersionNegotiationFailedException;
 import org.n52.sos.ogc.OGCConstants;
 import org.n52.sos.ogc.filter.FilterCapabilities;
 import org.n52.sos.ogc.filter.FilterConstants.ComparisonOperator;
+import org.n52.sos.ogc.filter.FilterConstants.ConformanceClassConstraintNames;
 import org.n52.sos.ogc.filter.FilterConstants.SpatialOperator;
 import org.n52.sos.ogc.filter.FilterConstants.TimeOperator;
 import org.n52.sos.ogc.gml.GmlConstants;
 import org.n52.sos.ogc.gml.time.TimePeriod;
 import org.n52.sos.ogc.om.OmConstants;
 import org.n52.sos.ogc.ows.OWSConstants;
+import org.n52.sos.ogc.ows.OwsDomainType;
 import org.n52.sos.ogc.ows.OwsExceptionReport;
 import org.n52.sos.ogc.ows.OwsExtendedCapabilitiesRepository;
 import org.n52.sos.ogc.ows.OwsMetadata;
+import org.n52.sos.ogc.ows.OwsNoValues;
 import org.n52.sos.ogc.ows.OwsOperation;
 import org.n52.sos.ogc.ows.OwsOperationsMetadata;
 import org.n52.sos.ogc.ows.OwsParameterValuePossibleValues;
@@ -73,6 +76,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
 
+/**
+ * WFS 2.0 GetCapabilities DAO class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GetCapabilitiesDAO.class);
@@ -91,6 +102,9 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
     private static final int ALL = 0x20 | SERVICE_IDENTIFICATION | SERVICE_PROVIDER | OPERATIONS_METADATA
             | FILTER_CAPABILITIES | FEATURE_TYPE_LIST;
 
+    /**
+     * constructor
+     */
     public GetCapabilitiesDAO() {
         super(WfsConstants.WFS);
     }
@@ -281,16 +295,64 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
      */
     private FilterCapabilities getFilterCapabilities(final String version) {
         final FilterCapabilities filterCapabilities = new FilterCapabilities();
-
-//        // !!! Modify methods addicted to your implementation !!!
-//        if (version.equals(Sos1Constants.SERVICEVERSION)) {
-//            getScalarFilterCapabilities(filterCapabilities);
-//        }
+        getConformance(filterCapabilities);
+        // // !!! Modify methods addicted to your implementation !!!
+        // if (version.equals(Sos1Constants.SERVICEVERSION)) {
+        // getScalarFilterCapabilities(filterCapabilities);
+        // }
         getScalarFilterCapabilities(filterCapabilities);
         getSpatialFilterCapabilities(filterCapabilities, version);
         getTemporalFilterCapabilities(filterCapabilities, version);
 
         return filterCapabilities;
+    }
+
+    private void getConformance(FilterCapabilities filterCapabilities) {
+        // set Query conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsQuery.name(),
+                new OwsNoValues(), FALSE));
+        // set Ad hoc query conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsAdHocQuery
+                .name(), new OwsNoValues(), TRUE));
+        // set Functions conformance class
+        filterCapabilities.addConformance(new OwsDomainType(
+                ConformanceClassConstraintNames.ImplementsFunctions.name(), new OwsNoValues(), FALSE));
+        // set Resource Identification conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsResourceld
+                .name(), new OwsNoValues(), FALSE));
+        // set Minimum Standard Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(
+                ConformanceClassConstraintNames.ImplementsMinStandardFilter.name(), new OwsNoValues(), FALSE));
+        // set Standard Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsStandardFilter
+                .name(), new OwsNoValues(), FALSE));
+        // set Minimum Spatial Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsMinSpatialFilter
+                .name(), new OwsNoValues(), TRUE));
+        // set Spatial Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsSpatialFilter
+                .name(), new OwsNoValues(), FALSE));
+        // set Minimum Temporal Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(
+                ConformanceClassConstraintNames.ImplementsMinTemporalFilter.name(), new OwsNoValues(), TRUE));
+        // set Temporal Filter conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsTemporalFilter
+                .name(), new OwsNoValues(), FALSE));
+        // set Version navigation conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsVersionNav
+                .name(), new OwsNoValues(), FALSE));
+        // set Sorting conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsSorting.name(),
+                new OwsNoValues(), FALSE));
+        // set Extended Operators conformance class
+        filterCapabilities.addConformance(new OwsDomainType(
+                ConformanceClassConstraintNames.ImplementsExtendedOperators.name(), new OwsNoValues(), FALSE));
+        // set Minimum XPath conformance class
+        filterCapabilities.addConformance(new OwsDomainType(ConformanceClassConstraintNames.ImplementsMinimumXPath
+                .name(), new OwsNoValues(), FALSE));
+        // set Schema Element Function conformance class
+        filterCapabilities.addConformance(new OwsDomainType(
+                ConformanceClassConstraintNames.ImplementsSchemaElementFunc.name(), new OwsNoValues(), FALSE));
     }
 
     /**
@@ -335,10 +397,8 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
 
         // set TemporalOperators
         final SetMultiMap<TimeOperator, QName> ops = MultiMaps.newSetMultiMap(TimeOperator.class);
-        for (final TimeOperator op : TimeOperator.values()) {
-            ops.add(op, GmlConstants.QN_TIME_INSTANT_32);
-            ops.add(op, GmlConstants.QN_TIME_PERIOD_32);
-        }
+        ops.add(TimeOperator.TM_Equals, GmlConstants.QN_TIME_INSTANT_32);
+        ops.add(TimeOperator.TM_During, GmlConstants.QN_TIME_PERIOD_32);
         filterCapabilities.setTempporalOperators(ops);
     }
 
@@ -352,14 +412,14 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
         // TODO PropertyIsNil, PropertyIsNull? better:
         // filterCapabilities.setComparisonOperators(Arrays.asList(ComparisonOperator.values()));
         final List<ComparisonOperator> comparisonOperators = new ArrayList<ComparisonOperator>(8);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsBetween);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsBetween);
         comparisonOperators.add(ComparisonOperator.PropertyIsEqualTo);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsNotEqualTo);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsLessThan);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsLessThanOrEqualTo);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsGreaterThan);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsGreaterThanOrEqualTo);
-//        comparisonOperators.add(ComparisonOperator.PropertyIsLike);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsNotEqualTo);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsLessThan);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsLessThanOrEqualTo);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsGreaterThan);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsGreaterThanOrEqualTo);
+        // comparisonOperators.add(ComparisonOperator.PropertyIsLike);
         filterCapabilities.setComparisonOperators(comparisonOperators);
     }
 
@@ -408,14 +468,14 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
     }
 
     private WfsExtendedDescription extendedDescription(String featureType) {
-        return new WfsExtendedDescription( getPhenomenonTimeElement(featureType));
+        return new WfsExtendedDescription(getPhenomenonTimeElement(featureType));
     }
 
     private WfsElement getPhenomenonTimeElement(String featureType) {
         TimePeriod timePeriod = new TimePeriod(getCache().getMinPhenomenonTime(), getCache().getMaxPhenomenonTime());
         OwsMetadata metadata = new OwsMetadata();
         metadata.setTitle("Time for which observations are available");
-        return new WfsElement("TemporalExtend", GmlConstants.QN_TIME_INSTANT_32, metadata, new WfsValueList(timePeriod));
+        return new WfsElement("TemporalExtend", GmlConstants.QN_TIME_PERIOD_32, metadata, new WfsValueList(timePeriod));
     }
 
     private boolean isFeatureTypeListSectionRequested(final int sections) {

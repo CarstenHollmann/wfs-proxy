@@ -35,11 +35,29 @@ import org.n52.sos.service.operator.ServiceOperatorRepository;
 import org.n52.wfs.request.GetCapabilitiesRequest;
 import org.n52.wfs.response.GetCapabilitiesResponse;
 
+/**
+ * Abstract WFS GetCapabilities DAO class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public abstract class AbstractGetCapabilitiesDAO extends AbstractOperationDAO  {
+    
+    protected static final String FALSE = Boolean.FALSE.toString();
 
+    protected static final String TRUE = Boolean.TRUE.toString();
+
+    /**
+     * constructor
+     * 
+     * @param service Service name
+     */
     public AbstractGetCapabilitiesDAO(String service) {
         super(service, WfsConstants.Operations.GetCapabilities.name());
     }
+    
 
     @Override
     protected void setOperationsMetadata(OwsOperation opsMeta, String service, String version)

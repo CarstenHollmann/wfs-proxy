@@ -27,8 +27,16 @@ import org.n52.ogc.wfs.ValueCollection;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.response.AbstractServiceResponse;
 
+/**
+ * Class represents a WFS GetPropertyValue response
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class GetPropertyValueResponse extends AbstractServiceResponse {
-    
+
     private ValueCollection valueCollection;
 
     @Override
@@ -36,12 +44,23 @@ public class GetPropertyValueResponse extends AbstractServiceResponse {
         return WfsConstants.Operations.GetPropertyValue.name();
     }
 
+    /**
+     * Get value collection
+     * 
+     * @return Value collection
+     */
     public ValueCollection getValueCollection() {
         return valueCollection;
     }
 
+    /**
+     * Set value collection
+     * 
+     * @param valueCollection
+     *            Value collection to set
+     */
     public void setValueCollection(ValueCollection valueCollection) {
         this.valueCollection = valueCollection;
     }
-    
+
 }

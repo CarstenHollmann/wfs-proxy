@@ -25,6 +25,14 @@ package org.n52.wfs.request;
 
 import org.n52.ogc.wfs.WfsConstants;
 
+/**
+ * WFS ListStoredQueries service request
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class ListStoredQueriesRequest extends AbstractWfsServiceRequest {
 
     @Override

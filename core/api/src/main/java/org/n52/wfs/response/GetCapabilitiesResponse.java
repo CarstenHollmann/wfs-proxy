@@ -27,21 +27,40 @@ import org.n52.ogc.wfs.WfsCapabilities;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.response.AbstractServiceResponse;
 
+/**
+ * Class represents a WFS GetCapabilities response
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class GetCapabilitiesResponse extends AbstractServiceResponse {
-    
+
     private WfsCapabilities capabilities;
-
-    public WfsCapabilities getCapabilities() {
-        return capabilities;
-    }
-
-    public void setCapabilities(WfsCapabilities capabilities) {
-        this.capabilities = capabilities;
-    }
 
     @Override
     public String getOperationName() {
         return WfsConstants.Operations.GetCapabilities.name();
+    }
+
+    /**
+     * Get WFS capabilities
+     * 
+     * @return the capabilities
+     */
+    public WfsCapabilities getCapabilities() {
+        return capabilities;
+    }
+
+    /**
+     * Set capabilities
+     * 
+     * @param capabilities
+     *            Capabilities to set
+     */
+    public void setCapabilities(WfsCapabilities capabilities) {
+        this.capabilities = capabilities;
     }
 
 }

@@ -35,20 +35,28 @@ import org.n52.sos.util.StringHelper;
  * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
- *
+ * @since 1.0.0
+ * 
  */
-public class WfsQuery extends AbstractAdHocQueryExpression{
-    
+public class WfsQuery extends AbstractAdHocQueryExpression {
+
+    private String srsName;
+
+    private String featureVersion;
+
+    /**
+     * constructor
+     * 
+     * @param typeNames
+     *            Required type names
+     */
     public WfsQuery(Collection<QName> typeNames) {
         super(typeNames);
     }
 
-    private String srsName;
-    
-    private String featureVersion;
-
     /**
+     * Get srs name
+     * 
      * @return the srsName
      */
     public String getSrsName() {
@@ -56,18 +64,29 @@ public class WfsQuery extends AbstractAdHocQueryExpression{
     }
 
     /**
-     * @param srsName the srsName to set
+     * Set srs name
+     * 
+     * @param srsName
+     *            the srsName to set
+     * @return WfsQuery
      */
     public WfsQuery setSrsName(String srsName) {
         this.srsName = srsName;
         return this;
     }
-    
+
+    /**
+     * Check if srs name is set
+     * 
+     * @return <code>true</code>, if srs name is set
+     */
     public boolean isSetSrsName() {
         return StringHelper.isNotEmpty(getSrsName());
     }
 
     /**
+     * Get feature version
+     * 
      * @return the featureVersion
      */
     public String getFeatureVersion() {
@@ -75,13 +94,22 @@ public class WfsQuery extends AbstractAdHocQueryExpression{
     }
 
     /**
-     * @param featureVersion the featureVersion to set
+     * Set feature version
+     * 
+     * @param featureVersion
+     *            the featureVersion to set
+     * @return WfsQuery
      */
     public WfsQuery setFeatureVersion(String featureVersion) {
         this.featureVersion = featureVersion;
         return this;
     }
-    
+
+    /**
+     * Check if feature version is set
+     * 
+     * @return <code>true</code>, if feature version is set
+     */
     public boolean isSetFeatureVersion() {
         return StringHelper.isNotEmpty(getFeatureVersion());
     }

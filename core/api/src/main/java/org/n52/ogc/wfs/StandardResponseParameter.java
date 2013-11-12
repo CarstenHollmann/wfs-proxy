@@ -25,34 +25,77 @@ package org.n52.ogc.wfs;
 
 import org.joda.time.DateTime;
 
+/**
+ * Abstract class for WFS standard response parameter
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public abstract class StandardResponseParameter {
 
     private DateTime timeStamp;
-    
+
     private String numberMatched;
-    
+
+    /**
+     * constructor
+     * 
+     * @param timeStamp
+     *            Required time stamp attribute
+     * @param numberMatched
+     *            Required number matched attribute
+     */
     public StandardResponseParameter(DateTime timeStamp, String numberMatched) {
         super();
-        this.timeStamp = timeStamp;
-        this.numberMatched = numberMatched;
+        setTimeStamp(timeStamp);
+        setNumberMatched(numberMatched);
     }
 
+    /**
+     * Get the time stamp
+     * 
+     * @return the time stamp
+     */
     public DateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(DateTime timeStamp) {
+    /**
+     * Set the time stamp
+     * 
+     * @param timeStamp
+     *            the time stamp to set
+     */
+    private void setTimeStamp(DateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 
+    /**
+     * Get the matched number
+     * 
+     * @return the matched number
+     */
     public String getNumberMatched() {
         return numberMatched;
     }
 
-    public void setNumberMatched(String numberMatched) {
+    /**
+     * Set the matched number
+     * 
+     * @param numberMatched
+     *            the matched number
+     */
+    private void setNumberMatched(String numberMatched) {
         this.numberMatched = numberMatched;
     }
-    
+
+    /**
+     * Get the returned number
+     * 
+     * @return the returned number
+     */
     public abstract int getNumberReturned();
-    
+
 }

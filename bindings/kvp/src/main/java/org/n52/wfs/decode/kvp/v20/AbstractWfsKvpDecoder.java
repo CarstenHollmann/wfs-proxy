@@ -35,12 +35,16 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.n52.ogc.wfs.WfsConstants.AdditionalCommonKeywordsParams;
 import org.n52.sos.config.annotation.Configurable;
 import org.n52.sos.config.annotation.Setting;
 import org.n52.sos.decode.Decoder;
 import org.n52.sos.ds.FeatureQuerySettingsProvider;
+import org.n52.sos.exception.CodedException;
 import org.n52.sos.exception.ConfigurationException;
 import org.n52.sos.exception.ows.InvalidParameterValueException;
+import org.n52.sos.exception.ows.MissingParameterValueException;
+import org.n52.sos.exception.ows.OptionNotSupportedException;
 import org.n52.sos.ogc.filter.FesSortBy;
 import org.n52.sos.ogc.filter.Filter;
 import org.n52.sos.ogc.filter.FilterConstants;
@@ -51,6 +55,7 @@ import org.n52.sos.request.AbstractServiceRequest;
 import org.n52.sos.service.ServiceConfiguration;
 import org.n52.sos.service.ServiceConstants;
 import org.n52.sos.util.CodingHelper;
+import org.n52.sos.util.CollectionHelper;
 import org.n52.sos.util.Constants;
 import org.n52.sos.util.JTSHelper;
 import org.n52.sos.util.SosHelper;
@@ -62,6 +67,14 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+/**
+ * Abstract WFS request encoder for KVP binding
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 @Configurable
 public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRequest, Map<String, String>> {
 
@@ -85,42 +98,77 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
         return Collections.emptyMap();
     }
 
+    /**
+     * @return
+     */
     public int getDefaultEPSG() {
         return defaultEPSG;
     }
 
+    /**
+     * @return
+     */
     public int getDefault3DEPSG() {
         return default3DEPSG;
     }
 
+    /**
+     * @param epsgCode
+     * @throws ConfigurationException
+     */
     @Setting(FeatureQuerySettingsProvider.DEFAULT_EPSG)
     public void setDefaultEpsg(final int epsgCode) throws ConfigurationException {
         Validation.greaterZero("Default EPSG Code", epsgCode);
         defaultEPSG = epsgCode;
     }
 
+    /**
+     * @param epsgCode3D
+     * @throws ConfigurationException
+     */
     @Setting(FeatureQuerySettingsProvider.DEFAULT_3D_EPSG)
     public void setDefault3DEpsg(final int epsgCode3D) throws ConfigurationException {
         Validation.greaterZero("Default 3D EPSG Code", epsgCode3D);
         default3DEPSG = epsgCode3D;
     }
 
-    protected Set<QName> createQNames(List<String> qNameStrings, Map<String, String> namespaces) {
+    /**
+     * @param qNameStrings
+     * @param namespaces
+     * @param parameterName
+     * @return
+     * @throws OwsExceptionReport
+     */
+    protected Set<QName> createQNames(List<String> qNameStrings, Map<String, String> namespaces, String parameterName) throws OwsExceptionReport {
         Set<QName> qNames = Sets.newHashSet();
         for (String qNameString : qNameStrings) {
-            qNames.add(createQName(qNameString, namespaces));
+            qNames.add(createQName(qNameString, namespaces, parameterName));
         }
         return qNames;
     }
 
-    protected QName createQName(String qnameString, Map<String, String> namespaces) {
+    /**
+     * @param qnameString
+     * @param namespaces
+     * @param parameterName
+     * @return
+     * @throws OwsExceptionReport
+     */
+    protected QName createQName(String qnameString, Map<String, String> namespaces, String parameterName) throws OwsExceptionReport {
+        if (CollectionHelper.isEmpty(namespaces)) {
+            throw new MissingParameterValueException(AdditionalCommonKeywordsParams.Namespaces);
+        }
         String[] split = qnameString.split(Constants.COLON_STRING);
         if (split.length != 2) {
-            // TODO throw exception
+            throw new InvalidParameterValueException(parameterName, qnameString);
         }
         return new QName(namespaces.get(split[0]), split[1], split[0]);
     }
 
+    /**
+     * @param parameterValues
+     * @return
+     */
     protected Map<String, String> parseNamespaces(String parameterValues) {
         List<String> array =
                 Arrays.asList(parameterValues.replaceAll("\\),", "").replaceAll("\\)", "").split("xmlns\\("));
@@ -134,11 +182,21 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
         return namespaces;
     }
 
-    protected FesSortBy parseSortBy(List<String> sortByList) {
-        // TODO Auto-generated method stub
-        return null;
+    /**
+     * @param sortByList
+     * @return
+     * @throws CodedException 
+     */
+    protected FesSortBy parseSortBy(List<String> sortByList) throws CodedException {
+        throw new OptionNotSupportedException().withMessage("This service does not support result sorting!");
     }
 
+    /**
+     * @param parameterValues
+     * @param parameterName
+     * @return
+     * @throws OwsExceptionReport
+     */
     protected SpatialFilter parseSpatialFilter(List<String> parameterValues, String parameterName)
             throws OwsExceptionReport {
         if (!parameterValues.isEmpty()) {
@@ -183,14 +241,26 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
         return null;
     }
 
+    /**
+     * @return
+     */
     protected String getSrsNamePrefix() {
         return ServiceConfiguration.getInstance().getSrsNamePrefix();
     }
 
+    /**
+     * @return
+     */
     protected String getSrsNamePrefixSosV2() {
         return ServiceConfiguration.getInstance().getSrsNamePrefixSosV2();
     }
 
+    /**
+     * @param filterString
+     * @param filterLanguage
+     * @return
+     * @throws OwsExceptionReport
+     */
     protected Filter<?> parseFilter(String filterString, String filterLanguage) throws OwsExceptionReport {
         if (StringHelper.isNotEmpty(filterLanguage)
                 && !FilterConstants.FILTER_LANGUAGE_FES_FILTER.equals(filterLanguage)) {
@@ -200,6 +270,10 @@ public abstract class AbstractWfsKvpDecoder implements Decoder<AbstractServiceRe
         return (Filter<?>) CodingHelper.decodeXmlObject(filterString);
     }
 
+    /**
+     * @param value
+     * @return
+     */
     protected List<String> parseJoinQueries(String value) {
         if (StringHelper.isNotEmpty(value)) {
             if (value.contains(PARANTHESES)) {

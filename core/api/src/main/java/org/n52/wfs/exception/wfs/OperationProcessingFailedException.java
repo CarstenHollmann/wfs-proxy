@@ -26,15 +26,20 @@ package org.n52.wfs.exception.wfs;
 import org.n52.sos.exception.CodedException;
 
 /**
+ * WFS OperationProcessingFailed exception class
+ * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
+ * @since 1.0.0
  * 
  */
 public class OperationProcessingFailedException extends CodedException {
 
     private static final long serialVersionUID = 7746974252661968330L;
 
+    /**
+     * constructor
+     */
     public OperationProcessingFailedException() {
         super(WfsExceptionCode.OperationProcessingFailed);
     }

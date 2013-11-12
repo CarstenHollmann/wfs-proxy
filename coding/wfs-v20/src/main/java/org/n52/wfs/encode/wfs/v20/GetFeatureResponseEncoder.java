@@ -46,8 +46,19 @@ import org.n52.wfs.response.GetFeatureResponse;
 
 import com.google.common.collect.Maps;
 
+/**
+ * WFS 2.0 GetFeature response encoder class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFeatureResponse> {
 
+    /**
+     * constructor
+     */
     public GetFeatureResponseEncoder() {
         super(WfsConstants.Operations.GetFeature.name(), GetFeatureResponse.class);
     }
@@ -81,6 +92,13 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
         return xbFeatureCollectionDoc;
     }
 
+    /**
+     * Get namespace for AbstractFeature
+     * 
+     * @param abstractFeature
+     *            AbstractFeature to get namespace for
+     * @return Namespace
+     */
     private String getNamespace(AbstractFeature abstractFeature) {
         if (abstractFeature instanceof OmObservation) {
             return OmConstants.NS_OM_2;

@@ -14,683 +14,238 @@
       },
       "method": "GET"
     },
-          {
+       {
       "param": {
         "service": "WFS",
         "version": "2.0.0",
-        "request": "GetFeature"
+        "request": "DescribeFeatureType",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typename": "om:Observation",
+        "outputFormat": "application/om+xml; version=2.0"
+      },
+      "service": "WFS",
+      "version": "2.0.0",
+      "binding": "/kvp",
+      "operation": "DescribeFeatureType",
+      "headers": {
+        "Accept": "application/xml"
+      },
+      "method": "GET"
+    },
+    	{
+      "param": {
+        "service": "WFS",
+        "version": "2.0.0",
+        "request": "ListStoredQueries"
+      },
+      "service": "WFS",
+      "version": "2.0.0",
+      "binding": "/kvp",
+      "operation": "ListStoredQueries",
+      "headers": {
+        "Accept": "application/xml"
+      },
+      "method": "GET"
+    },
+    	{
+      "param": {
+        "service": "WFS",
+        "version": "2.0.0",
+        "request": "DescribeStoredQueries"
+      },
+      "service": "WFS",
+      "version": "2.0.0",
+      "binding": "/kvp",
+      "operation": "DescribeStoredQueries",
+      "headers": {
+        "Accept": "application/xml"
+      },
+      "method": "GET"
+    },
+   		{
+      "param": {
+        "service": "WFS",
+        "version": "2.0.0",
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation"
       },
       "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
       "operation": "GetFeature",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "1.0.0",
-        "request": "DescribeSensor",
-        "procedure": "http://www.52north.org/test/procedure/1",
-        "outputFormat": "text/xml; subtype=\"sensorML/1.0.1\""
-      },
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/kvp",
-      "operation": "DescribeSensor",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "request": "GetCapabilities",
-        "AcceptVersions": "1.0.0"
-      },
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/kvp",
-      "operation": "GetCapabilities",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "1.0.0",
-        "request": "GetObservation",
-        "offering": "http://www.52north.org/test/offering/1",
-        "observedProperty": "http://www.52north.org/test/observableProperty/1",
-        "procedure": "http://www.52north.org/test/procedure/1",
-        "featureOfInterest": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,urn:ogc:def:crs:EPSG::4326",
-        "eventTime": "om:phenomenonTime,2012-11-19T14:00:00+01:00/2012-11-19T14:15:00+01:00",
-        "responseFormat": "text/xml; subtype=\"om/1.0.0\""
-      },
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "DeleteObservation",
-        "observation": "http://www.52north.org/test/observation/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "DeleteObservation",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "DeleteSensor",
-        "procedure": "http://www.52north.org/test/procedure/9"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "DeleteSensor",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "DescribeSensor",
-        "procedure": "http://www.52north.org/test/procedure/1",
-        "procedureDescriptionFormat": "http://www.opengis.net/sensorML/1.0.1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "DescribeSensor",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "request": "GetCapabilities"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetCapabilities",
       "title": "minimal",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
-        "request": "GetCapabilities",
-        "Sections": "Contents"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetCapabilities",
-      "title": "only Contents section",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "request": "GetCapabilities",
-        "Sections": "OperationsMetadata"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetCapabilities",
-      "title": "only OperationsMetadata section",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "request": "GetCapabilities",
-        "AcceptVersions": "2.0.0"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetCapabilities",
-      "title": "with AcceptVersions=2.0.0",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetDataAvailability",
-        "observedProperty": [
-          "http://www.52north.org/test/observableProperty/1",
-          "http://www.52north.org/test/observableProperty/3"
-        ],
-        "procedure": [
-          "http://www.52north.org/test/procedure/1",
-          "http://www.52north.org/test/procedure/3"
-        ],
-        "featureOfInterest": [
-          "http://www.52north.org/test/featureOfInterest/1",
-          "http://www.52north.org/test/featureOfInterest/3",
-          "http://www.52north.org/test/featureOfInterest/4"
-        ]
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>http://www.52north.org/test/procedure/1</Literal></PropertyIsEqualTo></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetDataAvailability",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetDataAvailability"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetDataAvailability",
-      "title": "minimal",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "featureOfInterest": "http://www.52north.org/test/featureOfInterest/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "featureOfInterest",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "featureOfInterest": [
-          "http://www.52north.org/test/featureOfInterest/1",
-          "http://www.52north.org/test/featureOfInterest/2"
-        ]
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "featureOfInterests",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "minimal",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "observedProperty": [
-          "http://www.52north.org/test/observableProperty/1",
-          "http://www.52north.org/test/observableProperty/2"
-        ]
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "observableProperties",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "observedProperty": "http://www.52north.org/test/observableProperty/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "observableProperty",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "procedure": "http://www.52north.org/test/procedure/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
+      "operation": "GetFeature",
       "title": "procedure",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "procedure": [
-          "http://www.52north.org/test/procedure/1",
-          "http://www.52north.org/test/procedure/2"
-        ]
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>http://www.52north.org/test/procedure/1</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>http://www.52north.org/test/procedure/2</Literal></PropertyIsEqualTo></Or></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
+      "operation": "GetFeature",
       "title": "procedures",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "namespaces": [
-          "xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
-          "xmlns(om,http://www.opengis.net/om/2.0)"
-        ],
-        "spatialFilter": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,http://www.opengis.net/def/crs/EPSG/0/4326"
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>http://www.52north.org/test/observableProperty/3</Literal></PropertyIsEqualTo></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "spatial filter, URL",
+      "operation": "GetFeature",
+      "title": "observedProperty",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetFeatureOfInterest",
-        "namespaces": [
-          "xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
-          "xmlns(om,http://www.opengis.net/om/2.0)"
-        ],
-        "spatialFilter": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,urn:ogc:def:crs:EPSG::4326"
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>http://www.52north.org/test/observableProperty/3</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>http://www.52north.org/test/observableProperty/4</Literal></PropertyIsEqualTo></Or></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetFeatureOfInterest",
-      "title": "spatial filter, URN",
+      "operation": "GetFeature",
+      "title": "observedProperties",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+       		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
-        "MergeObservationsIntoDataArray": "true",
-        "procedure": [
-          "http://www.52north.org/test/procedure/8"
-        ]
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>http://www.52north.org/test/featureOfInterest/5</Literal></PropertyIsEqualTo></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "Extension 'MergeObservationsIntoDataArray'",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "featureOfInterest": "http://www.52north.org/test/featureOfInterest/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
+      "operation": "GetFeature",
       "title": "featureOfInterest",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+        {
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
-        "featureOfInterest": [
-          "http://www.52north.org/test/featureOfInterest/1",
-          "http://www.52north.org/test/featureOfInterest/3"
-        ]
+        "request": "GetFeature",
+        "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>http://www.52north.org/test/featureOfInterest/5</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>http://www.52north.org/test/featureOfInterest/6</Literal></PropertyIsEqualTo></Or></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
+      "operation": "GetFeature",
       "title": "featureOfInterests",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
-        "offering": "http://www.52north.org/test/offering/1",
-        "observedProperty": "http://www.52north.org/test/observableProperty/1",
-        "procedure": "http://www.52north.org/test/procedure/1",
-        "namespaces": [
-          "xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
-          "xmlns(om,http://www.opengis.net/om/2.0)"
-        ],
-        "spatialFilter": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,urn:ogc:def:crs:EPSG::4326",
-        "temporalFilter": "om:phenomenonTime,2012-11-19T14:00:00+01:00/2012-11-19T14:15:00+01:00"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "full",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "observedProperty": [
-          "http://www.52north.org/test/observableProperty/1",
-          "http://www.52north.org/test/observableProperty/3"
-        ]
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "observableProperties",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "observedProperty": "http://www.52north.org/test/observableProperty/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "observableProperty",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "offering": "http://www.52north.org/test/offering/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "offering",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "offering": [
-          "http://www.52north.org/test/offering/1",
-          "http://www.52north.org/test/offering/3"
-        ]
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "offerings",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "procedure": "http://www.52north.org/test/procedure/1"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "procedure",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "procedure": [
-          "http://www.52north.org/test/procedure/1",
-          "http://www.52north.org/test/procedure/3"
-        ]
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "procedures",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "namespaces": [
-          "xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
-          "xmlns(om,http://www.opengis.net/om/2.0)"
-        ],
-        "spatialFilter": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,http://www.opengis.net/def/crs/EPSG/0/4326"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "spatial filter, URL",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
-        "namespaces": [
-          "xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
-          "xmlns(om,http://www.opengis.net/om/2.0)"
-        ],
-        "spatialFilter": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,urn:ogc:def:crs:EPSG::4326"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "spatial filter, URN",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetObservation",
+        "request": "GetFeature",
         "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
-        "temporalFilter": "om:phenomenonTime,2012-11-19T14:00:00+01:00/2012-11-19T14:15:00+01:00"
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><TEquals><ValueReference>om:phenomenonTime</ValueReference><gml:TimeInstant gml:id=\"ti_1\"><gml:timePosition>2012-11-19T14:00:00.000+01:00</gml:timePosition></gml:TimeInstant></TEquals></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "temporal filter during",
+      "operation": "GetFeature",
+      "title": "TEqual-TemporalFilter",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
+        "request": "GetFeature",
         "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
-        "temporalFilter": "om:phenomenonTime,2012-11-19T14:00:00.000+01:00"
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><During><ValueReference>om:phenomenonTime</ValueReference><gml:TimePeriod gml:id=\"tp_1\"><gml:beginPosition>2012-11-19T14:00:00.000+01:00</gml:beginPosition><gml:endPosition>2012-11-19T14:05:00.000+01:00</gml:endPosition></gml:TimePeriod></During></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "temporal filter equal",
+      "operation": "GetFeature",
+      "title": "During-TemporalFilter",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
-    {
+    		{
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
+        "request": "GetFeature",
         "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
-        "temporalFilter": "om:phenomenonTime,first"
+        "typenames": "om:Observation",
+        "filter": "<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><And><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>http://www.52north.org/test/procedure/1</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>http://www.52north.org/test/procedure/3</Literal></PropertyIsEqualTo></Or><Or><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>http://www.52north.org/test/observableProperty/3</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>http://www.52north.org/test/observableProperty/4</Literal></PropertyIsEqualTo></Or><Or><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>http://www.52north.org/test/featureOfInterest/3</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>http://www.52north.org/test/featureOfInterest/6</Literal></PropertyIsEqualTo></Or><During><ValueReference>om:phenomenonTime</ValueReference><gml:TimePeriod gml:id=\"tp_1\"><gml:beginPosition>2012-11-19T14:00:00.000+01:00</gml:beginPosition><gml:endPosition>2012-11-19T14:05:00.000+01:00</gml:endPosition></gml:TimePeriod></During><BBOX><ValueReference>om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape</ValueReference><gml:Envelope srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\"><gml:lowerCorner>0 0</gml:lowerCorner><gml:upperCorner>60 60</gml:upperCorner></gml:Envelope></BBOX></And></Filter>"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "temporal filter first",
+      "operation": "GetFeature",
+      "title": "all filter",
       "headers": {
         "Accept": "application/xml"
       },
@@ -698,1069 +253,24 @@
     },
     {
       "param": {
-        "service": "SOS",
+        "service": "WFS",
         "version": "2.0.0",
-        "request": "GetObservation",
+        "request": "GetFeature",
         "namespaces": "xmlns(om,http://www.opengis.net/om/2.0)",
-        "temporalFilter": "om:phenomenonTime,latest"
+        "typenames": "om:Observation",
+        "bbox": "om:featureOfInterest/*/sams:shape,0.0,0.0,60.0,60.0,http://www.opengis.net/def/crs/EPSG/0/4326"
       },
-      "service": "SOS",
+      "service": "WFS",
       "version": "2.0.0",
       "binding": "/kvp",
-      "operation": "GetObservation",
-      "title": "temporal filter latest",
+      "operation": "GetFeature",
+      "title": "bbox",
       "headers": {
         "Accept": "application/xml"
       },
       "method": "GET"
     },
     {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetResult",
-        "offering": "http://www.52north.org/test/offering/9",
-        "observedProperty": "http://www.52north.org/test/observableProperty/9_3"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetResult",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "param": {
-        "service": "SOS",
-        "version": "2.0.0",
-        "request": "GetResultTemplate",
-        "offering": "http://www.52north.org/test/offering/9",
-        "observedProperty": "http://www.52north.org/test/observableProperty/9_3"
-      },
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/kvp",
-      "operation": "GetResultTemplate",
-      "headers": {
-        "Accept": "application/xml"
-      },
-      "method": "GET"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/DescribeSensor.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "DescribeSensor",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/GetCapabilities.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "GetCapabilities",
-      "title": "All Sections",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/GetFeatureOfInterest_SpatialFilter.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "GetFeatureOfInterest",
-      "title": "BoundingBox",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/GetFeatureOfInterest.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "GetFeatureOfInterest",
-      "title": "FeatureOfInterestId",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/GetObservation.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "GetObservation",
-      "title": "All Parameters",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/GetObservationById.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "GetObservationById",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_categoryObservation.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "CategoryObservation",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_GenericObs_allTypes.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "GenericObservation - AllTypes",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_GenericObs_Derwent.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "GenericObservation - Derwent",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_GenericObs_Derwent_2.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "GenericObservation - Derwent 2",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_GenericObs_noIDs.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "GenericObservation - No ID's",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObs_geometry.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Geometry",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObs_geometry_movingObject.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Geometry - MovingObject",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_Measurement.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Measurement",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_4_RegSen_withFOI.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "RegisterSensor - FeatureOfInterest",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_samplingPoint.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "SamplingPoint",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/InsertObservation/InsertObservation_samplingSurface.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "SamplingSurface",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_categoryObservation.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "CategoryObservation",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_withFOI.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "FeatureOfInterest",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_geometry.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Geometry",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_measurement.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Measurement",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_Measurement_Derwent.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Measurement - Derwent",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_Observation_Derwent_2.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Measurement - Derwent 2",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_Observation_allTypes.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Observation - AllTypes",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_xml/RegisterSensor/RegisterSensor_Observation_noIDs.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/pox",
-      "operation": "RegisterSensor",
-      "title": "Observation - No ID's",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/DeleteObservation.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "DeleteObservation",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/DeleteSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "DeleteSensor",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/DescribeSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "DescribeSensor",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/GetCapabilities.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetCapabilities",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/GetDataAvailability.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetDataAvailability",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/GetFeatureOfInterest.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetFeatureOfInterest",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/GetObservation.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetObservation",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/GetObservationById.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetObservationById",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/ResultHandling/GetResult.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetResult",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/ResultHandling/GetResultTemplate.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "GetResultTemplate",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Category.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Category",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Count.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Count",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Geometry.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Geometry",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Measurement.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Measurement",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Measurement_SFP.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Measurement/Spatial Filtering Profile",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Multiple.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Multiple observations",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_SweArray.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "SweArray",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Text.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Text",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertObservation_Truth.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertObservation",
-      "title": "Truth",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/ResultHandling/InsertResult.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertResult",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/ResultHandling/InsertResultTemplate.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertResultTemplate",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/InsertSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "InsertSensor",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_xml/Transactional/UpdateSensorDescription.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/pox",
-      "operation": "UpdateSensorDescription",
-      "headers": {
-        "Accept": "application/xml",
-        "Content-Type": "application/xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/DescribeSensor.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "DescribeSensor",
-      "title": "SOAP 1.2",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/GetCapabilities.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "GetCapabilities",
-      "title": "All Sections (SOAP 1.2)",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/GetFeatureOfInterest_SpatialFilter.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "GetFeatureOfInterest",
-      "title": "BBOX (SOAP 1.2)",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/GetFeatureOfInterest.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "GetFeatureOfInterest",
-      "title": "ID (SOAP 1.2)",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/GetObservation.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "GetObservation",
-      "title": "All Parameters (SOAP 1.2)",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/InsertObservation.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "SOAP 1.2",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v100/requests_soap/RegisterSensor.xml",
-      "service": "SOS",
-      "version": "1.0.0",
-      "binding": "/soap",
-      "operation": "RegisterSensor",
-      "title": "SOAP 1.2",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/DeleteObservation.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "DeleteObservation",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/DeleteSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "DeleteSensor",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/DescribeSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "DescribeSensor",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/GetCapabilities.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetCapabilities",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/GetDataAvailability.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetDataAvailability",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/GetFeatureOfInterest.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetFeatureOfInterest",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/GetObservation.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetObservation",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/GetObservationById.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetObservationById",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/ResultHandling/GetResult.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetResult",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/ResultHandling/GetResultTemplate.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "GetResultTemplate",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Category.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Category",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Count.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Count",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Geometry.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Geometry",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Measurement.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Measurement",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Measurement_SFP.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Measurement/Spatial Filtering Profile",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Multiple.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Multiple observations",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_SweArray.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "SweArray",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Text.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Text",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertObservation_Truth.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertObservation",
-      "title": "Truth",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/ResultHandling/InsertResult.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertResult",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/ResultHandling/InsertResultTemplate.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertResultTemplate",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/InsertSensor.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "InsertSensor",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "request": "static/examples/sos_v20/requests_soap/Transactional/UpdateSensorDescription.xml",
-      "service": "SOS",
-      "version": "2.0.0",
-      "binding": "/soap",
-      "operation": "UpdateSensorDescription",
-      "headers": {
-        "Accept": "application/soap+xml",
-        "Content-Type": "application/soap+xml"
-      },
-      "method": "POST"
-    },
-    {
-      "service": "SOS",
-      "version": "2.0.0",
-      "method": "POST",
-      "binding": "/json",
-      "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      "operation": "GetCapabilities",
-      "title": "Contents section",
-      "request": {
-        "request": "GetCapabilities",
-        "service": "SOS",
-        "sections": [
-          "Contents"
-        ]
-      }
-    },
-    {
-      "id": "exampleData",
-      "service": "SOS",
-      "version": "2.0.0",
-      "method": "POST",
-      "binding": "/json",
-      "headers": {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
       "operation": "Batch",
       "title": "Example Data",
       "requiredOperations": [

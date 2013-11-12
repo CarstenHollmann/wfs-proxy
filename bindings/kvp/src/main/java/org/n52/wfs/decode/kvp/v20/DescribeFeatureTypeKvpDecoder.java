@@ -44,6 +44,14 @@ import org.n52.sos.util.KvpHelper;
 import org.n52.sos.util.http.MediaTypes;
 import org.n52.wfs.request.DescribeFeatureTypeRequest;
 
+/**
+ * WFS 2.0 DescribeFeatureType request encoder for KVP binding
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class DescribeFeatureTypeKvpDecoder extends AbstractWfsKvpDecoder {
 
     private static final DecoderKey KVP_DECODER_KEY_TYPE = new OperationDecoderKey(WfsConstants.WFS,
@@ -81,12 +89,12 @@ public class DescribeFeatureTypeKvpDecoder extends AbstractWfsKvpDecoder {
                 }
                 // namespaces (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdditionalCommonKeywordsParams.Namespaces.name())) {
-                    request.setNamespaces(parseNamespaces(parameterName));
+                    request.setNamespaces(parseNamespaces(parameterValues));
                 }
                 // typeName (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.DescribeFeatureTypeParams.TypeName.name())) {
                     qNameStringsForTypeName = KvpHelper.checkParameterMultipleValues(parameterValues, parameterName);
-                // outputFormat (optional)
+                    // outputFormat (optional)
                 } else if (parameterName.equalsIgnoreCase(WfsConstants.StandardPresentationParams.OutputFormat.name())) {
                     KvpHelper.checkParameterSingleValue(parameterValues, parameterName);
                 } else {
@@ -106,7 +114,8 @@ public class DescribeFeatureTypeKvpDecoder extends AbstractWfsKvpDecoder {
         }
 
         if (CollectionHelper.isNotEmpty(qNameStringsForTypeName)) {
-            request.setTypeNames(createQNames(qNameStringsForTypeName, request.getNamespaces()));
+            request.setTypeNames(createQNames(qNameStringsForTypeName, request.getNamespaces(),
+                    WfsConstants.AdHocQueryParams.TypeNames.name()));
         }
 
         exceptions.throwIfNotEmpty();

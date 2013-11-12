@@ -23,6 +23,14 @@
  */
 package org.n52.ogc.wfs;
 
+/**
+ * Class represents a WFS stored query list item element
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class StoredQueryListItem {
 
 }

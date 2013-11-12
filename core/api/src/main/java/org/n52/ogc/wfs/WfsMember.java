@@ -25,14 +25,46 @@ package org.n52.ogc.wfs;
 
 import org.n52.ogc.wfs.WfsConstants.State;
 
+/**
+ * Interface for WFS member element
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ * @param <T>
+ *            element type
+ */
 public interface WfsMember<T> {
-    
+
+    /**
+     * Get the state
+     * 
+     * @return the state
+     */
     public State getState();
-    
+
+    /**
+     * Set the state
+     * 
+     * @param state
+     *            the state to set
+     */
     public void setState(State state);
-    
+
+    /**
+     * Get element
+     * 
+     * @return the element
+     */
     public T getElement();
-    
+
+    /**
+     * Set element
+     * 
+     * @param element
+     *            the element to set
+     */
     public void setEelement(T element);
 
 }

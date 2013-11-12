@@ -4,7 +4,7 @@
     <parent>
         <artifactId>52n-wfs</artifactId>
         <groupId>org.n52.sensorweb.sos</groupId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>webapp-wfs</artifactId>
@@ -141,7 +141,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core-wfs-v20</artifactId>
+            <artifactId>simple-wfs-v20</artifactId>
+        </dependency>
+                <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>basic-wfs-v20</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

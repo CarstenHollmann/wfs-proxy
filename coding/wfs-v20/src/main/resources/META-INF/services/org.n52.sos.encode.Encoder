@@ -1,2 +1,6 @@
 org.n52.wfs.encode.wfs.v20.GetCapabilitiesResponseEncoder
 org.n52.wfs.encode.wfs.v20.GetFeatureResponseEncoder
+org.n52.wfs.encode.wfs.v20.DescribeStoredQueriesResponseEncoder
+org.n52.wfs.encode.wfs.v20.GetPropertyValueResponseEncoder
+org.n52.wfs.encode.wfs.v20.ListStoredQueriesResponseEncoder
+org.n52.wfs.encode.wfs.v20.DescribeFeatureTypeResponseEncoder

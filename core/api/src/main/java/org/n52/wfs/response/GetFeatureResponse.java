@@ -27,6 +27,14 @@ import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsFeatureCollection;
 import org.n52.sos.response.AbstractServiceResponse;
 
+/**
+ * Class represents a WFS GetFeature response
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class GetFeatureResponse extends AbstractServiceResponse {
 
     private WfsFeatureCollection featureCollection;
@@ -37,6 +45,8 @@ public class GetFeatureResponse extends AbstractServiceResponse {
     }
 
     /**
+     * Get feature collection
+     * 
      * @return the featureCollection
      */
     public WfsFeatureCollection getFeatureCollection() {
@@ -44,11 +54,13 @@ public class GetFeatureResponse extends AbstractServiceResponse {
     }
 
     /**
-     * @param featureCollection the featureCollection to set
+     * Set feature collection
+     * 
+     * @param featureCollection
+     *            the featureCollection to set
      */
     public void setFeatureCollection(WfsFeatureCollection featureCollection) {
         this.featureCollection = featureCollection;
     }
-
 
 }

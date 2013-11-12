@@ -30,45 +30,98 @@ import org.n52.sos.util.StringHelper;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Class for WFS capabilities crs element
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class WfsCapabilitiesCrs {
-    
+
     /* 1..1 */
     private String defaultCrs;
-    
+
     /* 0..* */
     private Set<String> otherCrs = Sets.newHashSet();
-    
+
+    /**
+     * constructor
+     * 
+     * @param defaultCrs
+     *            Required default CRS
+     */
     public WfsCapabilitiesCrs(String defaultCrs) {
-        this.defaultCrs = defaultCrs;
+        setDefaultCrs(defaultCrs);
     }
-    
+
+    /**
+     * Get default CRS
+     * 
+     * @return the default CRS
+     */
     public String getDefaultCrs() {
         return defaultCrs;
     }
-    
-    public WfsCapabilitiesCrs setDefaultCrs(String defaultCrs) {
+
+    /**
+     * Set the default CRS
+     * 
+     * @param defaultCrs
+     *            the default CRS to set
+     */
+    private void setDefaultCrs(String defaultCrs) {
         this.defaultCrs = defaultCrs;
-        return this;
     }
-    
+
+    /**
+     * Get other CRSes
+     * 
+     * @return the other CRSes
+     */
     public Set<String> getOtherCrs() {
         return otherCrs;
     }
-    
+
+    /**
+     * Add another CRS
+     * 
+     * @param otherCrs
+     *            the CRS to set
+     * @return WfsCapabilitiesCrs
+     */
     public WfsCapabilitiesCrs addOtherCrs(String otherCrs) {
         getOtherCrs().add(otherCrs);
         return this;
     }
 
+    /**
+     * Set other CRSes
+     * 
+     * @param otherCrs
+     *            the CRSes to set
+     * @return WfsCapabilitiesCrs
+     */
     public WfsCapabilitiesCrs setOtherCrs(Set<String> otherCrs) {
         getOtherCrs().addAll(otherCrs);
         return this;
     }
 
+    /**
+     * Check if default CRS is set
+     * 
+     * @return <code>true</code>, if default CRS is set
+     */
     public boolean isSetCrs() {
         return StringHelper.isNotEmpty(getDefaultCrs());
     }
 
+    /**
+     * Check if other CRSes are set
+     * 
+     * @return <code>true</code>, if other CRSes are set
+     */
     public boolean isSetOtherCrs() {
         return CollectionHelper.isNotEmpty(getOtherCrs());
     }

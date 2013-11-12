@@ -30,8 +30,21 @@ import org.n52.sos.ogc.ows.OwsOperation;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
 
+/**
+ * Abstract WFS GetFeature DAO class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public abstract class AbstractGetFeatureDAO extends AbstractOperationDAO  {
 
+    /**
+     * constructor
+     * 
+     * @param service Service name
+     */
     public AbstractGetFeatureDAO(String service) {
         super(service, WfsConstants.Operations.GetFeature.name());
     }

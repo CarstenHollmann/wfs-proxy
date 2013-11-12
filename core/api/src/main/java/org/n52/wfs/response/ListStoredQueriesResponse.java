@@ -32,8 +32,16 @@ import org.n52.sos.util.CollectionHelper;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Class represents a WFS ListStoredQueries response
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class ListStoredQueriesResponse extends AbstractServiceResponse {
-    
+
     /* 0..* */
     private Set<StoredQueryListItem> storedQueries = Sets.newHashSet();
 
@@ -42,20 +50,44 @@ public class ListStoredQueriesResponse extends AbstractServiceResponse {
         return WfsConstants.Operations.ListStoredQueries.name();
     }
 
+    /**
+     * Get stored queries
+     * 
+     * @return Stored queries
+     */
     public Set<StoredQueryListItem> getStoredQueries() {
         return storedQueries;
     }
-    
+
+    /**
+     * Add a stored query
+     * 
+     * @param storedQuery
+     *            Stored query to add
+     * @return ListStoredQueriesResponse
+     */
     public ListStoredQueriesResponse addStoredQueries(StoredQueryListItem storedQuery) {
         getStoredQueries().add(storedQuery);
         return this;
     }
 
+    /**
+     * Add stored queries
+     * 
+     * @param storedQueries
+     *            Stored Queries to add
+     * @return ListStoredQueriesResponse
+     */
     public ListStoredQueriesResponse setStoredQueries(Set<StoredQueryListItem> storedQueries) {
         getStoredQueries().addAll(storedQueries);
         return this;
     }
 
+    /**
+     * Check if stored queries are set
+     * 
+     * @return <code>true</code>, if stored queries are set
+     */
     public boolean isSetStoredQueries() {
         return CollectionHelper.isNotEmpty(getStoredQueries());
     }

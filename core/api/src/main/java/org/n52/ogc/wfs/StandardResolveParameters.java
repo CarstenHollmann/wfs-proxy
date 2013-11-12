@@ -28,24 +28,33 @@ package org.n52.ogc.wfs;
  * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
- *
+ * @since 1.0.0
+ * 
  */
 public class StandardResolveParameters {
-    
+
     private static final int DEFAULT_RESOLVE_TIMEOUT = 300;
-    
+
+    /**
+     * Enum for resolve value type
+     * 
+     * @author Carsten Hollmann <c.hollmann@52north.org>
+     * @since 1.0.0
+     * 
+     */
     public enum ResolveValueType {
         local, remote, all, none
     }
 
     private ResolveValueType resolveValueType = ResolveValueType.none;
-    
+
     private ResultDepth resultDepth = new ResultDepth();
-    
+
     private int resolveTimeout = DEFAULT_RESOLVE_TIMEOUT;
 
     /**
+     * Get resolve value type
+     * 
      * @return the resolveValueType
      */
     public ResolveValueType getResolveValueType() {
@@ -53,13 +62,18 @@ public class StandardResolveParameters {
     }
 
     /**
-     * @param resolveValueType the resolveValueType to set
+     * Set resolve value type
+     * 
+     * @param resolveValueType
+     *            the resolveValueType to set
      */
     public void setResolveValueType(ResolveValueType resolveValueType) {
         this.resolveValueType = resolveValueType;
     }
 
     /**
+     * Get result depth
+     * 
      * @return the resultDepth
      */
     public ResultDepth getResultDepth() {
@@ -67,13 +81,18 @@ public class StandardResolveParameters {
     }
 
     /**
-     * @param resultDepth the resultDepth to set
+     * Set result depth
+     * 
+     * @param resultDepth
+     *            the resultDepth to set
      */
     public void setResultDepth(ResultDepth resultDepth) {
         this.resultDepth = resultDepth;
     }
 
     /**
+     * Get resolve timeout
+     * 
      * @return the resolveTimeout
      */
     public int getResolveTimeout() {
@@ -81,7 +100,10 @@ public class StandardResolveParameters {
     }
 
     /**
-     * @param resolveTimeout the resolveTimeout to set
+     * Set resolve timeout
+     * 
+     * @param resolveTimeout
+     *            the resolveTimeout to set
      */
     public void setResolveTimeout(int resolveTimeout) {
         this.resolveTimeout = resolveTimeout;

@@ -40,10 +40,18 @@ import org.n52.sos.util.XmlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * WFS 2.0 XML decoder class
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class WfsDecoderV20 implements Decoder<AbstractServiceCommunicationObject, XmlObject> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WfsDecoderV20.class);
-    
+
     @Override
     public Set<String> getConformanceClasses() {
         // TODO Auto-generated method stub
@@ -69,15 +77,22 @@ public class WfsDecoderV20 implements Decoder<AbstractServiceCommunicationObject
         // validate document
         XmlHelper.validateDocument(xml);
         if (xml instanceof GetCapabilitiesDocument) {
-            return parseGetCapabilities((GetCapabilitiesDocument)xml);
+            return parseGetCapabilities((GetCapabilitiesDocument) xml);
         } else {
-                throw new UnsupportedDecoderInputException(this, xml);
-            }
+            throw new UnsupportedDecoderInputException(this, xml);
+        }
     }
 
+    /**
+     * Parse XML GetCapabilities request
+     * 
+     * @param xml
+     *            XML GetCapabilities request to parse
+     * @return Service GetCapabilities request
+     */
     private AbstractServiceCommunicationObject parseGetCapabilities(GetCapabilitiesDocument xml) {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
 }

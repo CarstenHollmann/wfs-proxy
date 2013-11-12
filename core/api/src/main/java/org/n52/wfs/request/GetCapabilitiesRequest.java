@@ -36,8 +36,16 @@ import org.n52.sos.service.operator.ServiceOperatorRepository;
 import org.n52.sos.util.CollectionHelper;
 import org.n52.sos.util.StringHelper;
 
+/**
+ * WFS GetCapabilities service request
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class GetCapabilitiesRequest extends AbstractServiceRequest {
-    
+
     private String updateSequence;
 
     private final List<String> acceptVersions = new LinkedList<String>();
@@ -109,12 +117,24 @@ public class GetCapabilitiesRequest extends AbstractServiceRequest {
         return acceptVersions == null ? null : Collections.unmodifiableList(acceptVersions);
     }
 
+    /**
+     * Add an accept version
+     * 
+     * @param acceptVersion
+     *            the accept version to add
+     */
     public void addAcceptVersion(String acceptVersion) {
         if (acceptVersion != null) {
             acceptVersions.add(acceptVersion);
         }
     }
 
+    /**
+     * Set accept version
+     * 
+     * @param acceptVersions
+     *            the accept versions to add
+     */
     public void setAcceptVersions(List<String> acceptVersions) {
         this.acceptVersions.clear();
         if (acceptVersions != null) {
@@ -163,18 +183,38 @@ public class GetCapabilitiesRequest extends AbstractServiceRequest {
         this.updateSequence = updateSequence;
     }
 
+    /**
+     * Check if accept formats are set
+     * 
+     * @return <code>true</code>, if accept formats are set
+     */
     public boolean isSetAcceptFormats() {
         return CollectionHelper.isNotEmpty(getAcceptFormats());
     }
 
+    /**
+     * Check if accept version are set
+     * 
+     * @return <code>true</code>, if accept versions are set
+     */
     public boolean isSetAcceptVersions() {
         return CollectionHelper.isNotEmpty(getAcceptVersions());
     }
 
+    /**
+     * Check if sections are set
+     * 
+     * @return <code>true</code>, if accept sections are set
+     */
     public boolean isSetSections() {
         return CollectionHelper.isNotEmpty(getSections());
     }
 
+    /**
+     * Check if update sequence is set
+     * 
+     * @return <code>true</code>, if update sequence is set
+     */
     public boolean isSetUpdateSequence() {
         return StringHelper.isNotEmpty(getUpdateSequence());
     }

@@ -26,9 +26,11 @@ package org.n52.wfs.exception.wfs;
 import org.n52.sos.ogc.ows.ExceptionCode;
 
 /**
+ * WFS specific exception codes
+ * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since 4.0.0
+ * @since 1.0.0
  * 
  */
 public enum WfsExceptionCode implements ExceptionCode {

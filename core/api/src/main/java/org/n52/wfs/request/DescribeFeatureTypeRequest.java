@@ -34,46 +34,96 @@ import org.n52.sos.util.http.MediaTypes;
 
 import com.google.common.collect.Sets;
 
+/**
+ * WFS DescribeFeatureType service request
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class DescribeFeatureTypeRequest extends AbstractWfsServiceRequest {
-    
+
     /* 0..* */
     private Set<QName> typeNames = Sets.newHashSet();
-    
+
     /* 1..1 */
     private MediaType outputFormat = MediaTypes.APPLICTION_GML_32;
-    
+
     @Override
     public String getOperationName() {
         return WfsConstants.Operations.DescribeFeatureType.name();
     }
 
+    /**
+     * Get type names
+     * 
+     * @return the type names
+     */
     public Set<QName> getTypeNames() {
         return typeNames;
     }
-    
+
+    /**
+     * Add a type name
+     * 
+     * @param typeNames
+     *            the type name to add
+     * @return DescribeFeatureTypeRequest
+     */
     public DescribeFeatureTypeRequest addTypeNames(QName typeNames) {
         getTypeNames().add(typeNames);
         return this;
     }
-    
+
+    /**
+     * Add type names
+     * 
+     * @param typeNames
+     *            the type names to add
+     * @return DescribeFeatureTypeRequest
+     */
     public DescribeFeatureTypeRequest addTypeNames(Set<QName> typeNames) {
         getTypeNames().addAll(typeNames);
         return this;
     }
 
+    /**
+     * Set type names
+     * 
+     * @param typeNames
+     *            type names to set
+     * @return DescribeFeatureTypeRequest
+     */
     public DescribeFeatureTypeRequest setTypeNames(Set<QName> typeNames) {
-        this.typeNames = typeNames; 
+        this.typeNames = typeNames;
         return this;
     }
-    
+
+    /**
+     * Check if type names are set
+     * 
+     * @return <code>true</code>, if type names are set
+     */
     public boolean isSetTypeNames() {
         return CollectionHelper.isNotEmpty(getTypeNames());
     }
 
+    /**
+     * Get output format
+     * 
+     * @return the output format
+     */
     public MediaType getOutputFormat() {
         return outputFormat;
     }
 
+    /**
+     * Set output format
+     * 
+     * @param outputFormat
+     *            the output format to set
+     */
     public void setOutputFormat(MediaType outputFormat) {
         this.outputFormat = outputFormat;
     }

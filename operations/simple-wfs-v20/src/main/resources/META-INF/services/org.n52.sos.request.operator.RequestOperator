@@ -1,0 +1,5 @@
+org.n52.wfs.request.operator.WfsGetCapabilitiesOperatorV20
+org.n52.wfs.request.operator.WfsGetFeatureOperatorV20
+org.n52.wfs.request.operator.WfsDescribeFeatureTypeOperatorV20
+org.n52.wfs.request.operator.WfsDescribeStoredQueriesOperatorV20
+org.n52.wfs.request.operator.WfsListStoredQueriesOperatorV20

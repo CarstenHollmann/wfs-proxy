@@ -28,27 +28,57 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Class representing a WFS value list
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ * 
+ */
 public class WfsValueList {
-    
+
     private Set<Object> values = Sets.newHashSet();
 
     /**
+     * constructor
+     * 
      * @param values
+     *            Required value
      */
     public WfsValueList(Object value) {
         super();
         this.values.add(value);
-    } 
+    }
 
+    /**
+     * Get values
+     * 
+     * @return the values
+     */
     public Set<Object> getValues() {
         return values;
     }
-    
+
+    /**
+     * Add a value
+     * 
+     * @param value
+     *            the value to add
+     * @return WfsValueList
+     */
     public WfsValueList addValue(Object value) {
         getValues().add(value);
         return this;
     }
-    
+
+    /**
+     * Add values
+     * 
+     * @param values
+     *            the values to add
+     * @return WfsValueList
+     */
     public WfsValueList addValues(Collection<Object> values) {
         getValues().addAll(values);
         return this;

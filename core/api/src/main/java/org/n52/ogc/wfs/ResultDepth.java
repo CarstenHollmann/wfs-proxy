@@ -28,22 +28,39 @@ package org.n52.ogc.wfs;
  * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
  * 
- * @since
- *
+ * @since 1.0.0
+ * 
  */
 public class ResultDepth {
-    
+
     private int depthValue = 0;
-    
+
+    /**
+     * Set depth value
+     * 
+     * @param depthValue
+     *            the depth value to set
+     * @return ResultDepth
+     */
     public ResultDepth setDepthValue(int depthValue) {
         this.depthValue = depthValue;
         return this;
     }
-    
+
+    /**
+     * Get depth value
+     * 
+     * @return the depth value
+     */
     public int getDepthValue() {
         return depthValue;
     }
 
+    /**
+     * Check if depth value is set
+     * 
+     * @return <code>true</code>, if depth value is set
+     */
     public boolean isSetDepthValue() {
         return depthValue > 0;
     }

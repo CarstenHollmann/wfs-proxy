@@ -26,14 +26,23 @@ package org.n52.wfs.exception.wfs;
 import org.n52.sos.exception.CodedException;
 
 /**
+ * WFS coded exception class
+ * 
  * @author Carsten Hollmann <c.hollmann@52north.org>
- * @since 4.0.0
+ * 
+ * @since 1.0.0
  * 
  */
 public abstract class CodedWfsException extends CodedException {
 
     private static final long serialVersionUID = 319879505108604125L;
 
+    /**
+     * constructor
+     * 
+     * @param code
+     *            Exception code
+     */
     public CodedWfsException(WfsExceptionCode code) {
         super(code);
     }

@@ -44,6 +44,14 @@ import org.n52.wfs.request.GetCapabilitiesRequest;
 
 import com.google.common.collect.Sets;
 
+/**
+ * WFS 2.0 GetCapabilities request encoder for KVP binding
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public class GetCapabilitiesKvpDecoder extends AbstractWfsKvpDecoder {
 
     private static final Set<DecoderKey> KVP_DECODER_KEY_TYPE = Sets.<DecoderKey> newHashSet(

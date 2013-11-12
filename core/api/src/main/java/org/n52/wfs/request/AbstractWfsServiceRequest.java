@@ -29,6 +29,14 @@ import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.request.AbstractServiceRequest;
 import org.n52.sos.util.CollectionHelper;
 
+/**
+ * Abstract WFS service request
+ * 
+ * @author Carsten Hollmann <c.hollmann@52north.org>
+ * 
+ * @since 1.0.0
+ *
+ */
 public abstract class AbstractWfsServiceRequest extends AbstractServiceRequest {
     
     /* Attribute for XML, not defined for KVP binding */
@@ -36,22 +44,42 @@ public abstract class AbstractWfsServiceRequest extends AbstractServiceRequest {
     
     private Map<String, String> namespaces = WfsConstants.defaultNamespaces;
     
+    /**
+     * Get handle
+     * @return the handle
+     */
     public String getHandle() {
         return handle;
     }
 
+    /**
+     * Set handle
+     * @param handle the handle to set
+     */
     public void setHandle(String handle) {
         this.handle = handle;
     }
 
+    /**
+     * Get namespaces
+     * @return the namespaces
+     */
     public Map<String, String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Set namespaces
+     * @param namespaces the namespaces to set
+     */
     public void setNamespaces(Map<String, String> namespaces) {
         getNamespaces().putAll(namespaces);
     }
     
+    /**
+     * Check if namespaces are set
+     * @return <code>true</code>, if namespaces are set
+     */
     public boolean isSetNamespaces() {
         return CollectionHelper.isNotEmpty(getNamespaces());
     }
