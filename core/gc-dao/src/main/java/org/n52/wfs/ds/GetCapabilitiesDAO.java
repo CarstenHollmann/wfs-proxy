@@ -468,14 +468,21 @@ public class GetCapabilitiesDAO extends AbstractGetCapabilitiesDAO {
     }
 
     private WfsExtendedDescription extendedDescription(String featureType) {
-        return new WfsExtendedDescription(getPhenomenonTimeElement(featureType));
+        WfsElement element = getPhenomenonTimeElement(featureType);
+        if (element != null) {
+            return new WfsExtendedDescription(getPhenomenonTimeElement(featureType));
+        }
+        return null;
     }
 
     private WfsElement getPhenomenonTimeElement(String featureType) {
         TimePeriod timePeriod = new TimePeriod(getCache().getMinPhenomenonTime(), getCache().getMaxPhenomenonTime());
-        OwsMetadata metadata = new OwsMetadata();
-        metadata.setTitle("Time for which observations are available");
-        return new WfsElement("TemporalExtend", GmlConstants.QN_TIME_PERIOD_32, metadata, new WfsValueList(timePeriod));
+        if (!timePeriod.isEmpty()) {
+            OwsMetadata metadata = new OwsMetadata();
+            metadata.setTitle("Time for which observations are available");
+            return new WfsElement("TemporalExtend", GmlConstants.QN_TIME_PERIOD_32, metadata, new WfsValueList(timePeriod));
+        }
+        return null;
     }
 
     private boolean isFeatureTypeListSectionRequested(final int sections) {

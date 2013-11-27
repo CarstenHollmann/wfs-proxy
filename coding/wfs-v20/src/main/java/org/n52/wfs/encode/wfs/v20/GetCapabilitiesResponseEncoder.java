@@ -307,10 +307,12 @@ public class GetCapabilitiesResponseEncoder extends AbstractWfsResponseEncoder<G
      */
     private void encodeWgs84BoundingBoxes(FeatureTypeType xbFeatureType, Set<SosEnvelope> wgs84BoundingBoxes) {
         for (SosEnvelope sosEnvelope : wgs84BoundingBoxes) {
-            MinMax<List<String>> minMaxFromEnvelope = SosHelper.getMinMaxFromEnvelopeAsList(sosEnvelope.getEnvelope());
-            WGS84BoundingBoxType xbWGS84BoundingBox = xbFeatureType.addNewWGS84BoundingBox();
-            xbWGS84BoundingBox.setLowerCorner(minMaxFromEnvelope.getMinimum());
-            xbWGS84BoundingBox.setUpperCorner(minMaxFromEnvelope.getMaximum());
+            if (sosEnvelope.isSetEnvelope()) {
+                MinMax<List<String>> minMaxFromEnvelope = SosHelper.getMinMaxFromEnvelopeAsList(sosEnvelope.getEnvelope());
+                WGS84BoundingBoxType xbWGS84BoundingBox = xbFeatureType.addNewWGS84BoundingBox();
+                xbWGS84BoundingBox.setLowerCorner(minMaxFromEnvelope.getMinimum());
+                xbWGS84BoundingBox.setUpperCorner(minMaxFromEnvelope.getMaximum());
+            }
         }
     }
 
