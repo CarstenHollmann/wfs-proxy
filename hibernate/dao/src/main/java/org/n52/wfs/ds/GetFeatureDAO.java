@@ -23,6 +23,9 @@
  */
 package org.n52.wfs.ds;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.n52.ogc.wfs.OmObservationMember;
 import org.n52.ogc.wfs.WfsConstants;
@@ -119,7 +122,7 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                     if (filter instanceof BinaryLogicFilter) {
                         convertBinaryLogicFilter((BinaryLogicFilter) filter, sosRequest, binaryLogicOpLevelCounter);
                     } else if (filter instanceof ComparisonFilter) {
-                        convertComparisonFilter((ComparisonFilter) filter, sosRequest, null);
+                        convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, new HashSet<Filter<?>>());
                     } else if (filter instanceof TemporalFilter) {
                         addTemporalFilter((TemporalFilter) filter, sosRequest);
                     } else if (filter instanceof SpatialFilter) {
@@ -132,6 +135,9 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                         throw new OptionNotSupportedException()
                                 .withMessage("The requested filter is not supported in by this service!");
                     }
+                    if (!sosRequest.isSetResultFilter()) {
+                        sosRequest.setResultFilter((Filter<?>)filter);
+                    } 
                 }
             }
         }
@@ -154,6 +160,7 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
             int binaryLogicOpLevelCounter) throws OwsExceptionReport {
         ComparisonFilterEquality equalityCheck = null;
         int currentBinaryLogicOpLevel = binaryLogicOpLevelCounter + 1;
+        Set<Filter<?>> filterToRemove = new HashSet<Filter<?>>();
         for (Filter<?> filterPredicate : filter.getFilterPredicates()) {
             if (filterPredicate instanceof BinaryLogicFilter) {
                 if (currentBinaryLogicOpLevel >= 3) {
@@ -166,8 +173,14 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                             .withMessage("'And'-BinaryLogicOps is not supported as sub-filter!");
                 }
                 convertBinaryLogicFilter(binLogFilter, sosRequest, currentBinaryLogicOpLevel);
+                if (binLogFilter.getFilterPredicates().isEmpty()) {
+                    filterToRemove.add(binLogFilter);
+                } 
+                if (currentBinaryLogicOpLevel == 2 && !binLogFilter.getFilterPredicates().isEmpty()) {
+                    sosRequest.setResultFilter(binLogFilter);
+                }
             } else if (filterPredicate instanceof ComparisonFilter) {
-                convertComparisonFilter((ComparisonFilter) filterPredicate, sosRequest, equalityCheck);
+                convertComparisonFilter((ComparisonFilter) filterPredicate, sosRequest, equalityCheck, filterToRemove);
             } else if (filterPredicate instanceof TemporalFilter) {
                 TemporalFilter temporalFilter = (TemporalFilter) filterPredicate;
                 if (!isPhenomenonTimeFilter(temporalFilter)) {
@@ -175,17 +188,20 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                             .withMessage("Only temporal filters for valueReference = 'om:phenomenonTime' are yet supported!");
                 }
                 addTemporalFilter((TemporalFilter) filterPredicate, sosRequest);
+                filterToRemove.add(filterPredicate);
             } else if (filterPredicate instanceof SpatialFilter) {
                 if (sosRequest.isSetSpatialFilter()) {
                     throw new NoApplicableCodeException()
                             .withMessage("This service supports only one spatial filter per request!");
                 }
                 sosRequest.setSpatialFilter((SpatialFilter) filterPredicate);
+                filterToRemove.add(filterPredicate);
             } else {
                 throw new OptionNotSupportedException()
                         .withMessage("The requested filter is not supported in by this service!");
             }
         }
+        filter.getFilterPredicates().removeAll(filterToRemove);
     }
 
     /**
@@ -197,11 +213,12 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
      *            SOS GetObservation request
      * @param equalityCheck
      *            Indicator for valid ComparsionFilterEquality value
+     * @param filterToRemove 
      * @throws CodedException
      *             If an error occurs or a requested parameter is not supported
      */
     private void convertComparisonFilter(ComparisonFilter filter, GetObservationRequest request,
-            ComparisonFilterEquality equalityCheck) throws CodedException {
+            ComparisonFilterEquality equalityCheck, Set<Filter<?>> filterToRemove) throws CodedException {
         ComparisonFilterEquality currentComparisonFilterEquality =
                 ComparisonFilterEquality.fromValue(filter.getValueReference());
         if (equalityCheck == null) {
@@ -211,12 +228,18 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
             switch (currentComparisonFilterEquality) {
             case Procedure:
                 addProcedureIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
                 break;
             case ObervedProperty:
                 addObservedPropertyIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
                 break;
             case FeatureOfInterest:
                 addFeatureOfInterestIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
+                break;
+            case GmlDescription:
+                LOGGER.debug("Result filter for obsevation with valueReference '{}'!", filter.getValueReference());
                 break;
             default:
                 throw new NoApplicableCodeException().withMessage(
@@ -347,7 +370,7 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
      */
     enum ComparisonFilterEquality {
         Procedure("om:procedure"), ObervedProperty("om:observedProperty"), FeatureOfInterest("om:featureOfInterest"), PhenomenonTime(
-                "om:phenomenonTime");
+                "om:phenomenonTime"), GmlDescription("om:observation/gml:description");
 
         private String value;
 
