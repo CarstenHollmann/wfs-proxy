@@ -119,12 +119,13 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                 if (query.isSetSelectionClause()) {
                     int binaryLogicOpLevelCounter = 1;
                     AbstractSelectionClause filter = query.getSelectionClause();
+                    HashSet<Filter<?>> filterToRemove = new HashSet<Filter<?>>();
                     if (filter instanceof BinaryLogicFilter) {
                         convertBinaryLogicFilter((BinaryLogicFilter) filter, sosRequest, binaryLogicOpLevelCounter);
                     } else if (filter instanceof ComparisonFilter) {
-                        convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, new HashSet<Filter<?>>());
+                        convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, filterToRemove);
                     } else if (filter instanceof TemporalFilter) {
-                        addTemporalFilter((TemporalFilter) filter, sosRequest);
+                        addTemporalFilter((TemporalFilter) filter, sosRequest, filterToRemove);
                     } else if (filter instanceof SpatialFilter) {
                         throw new OptionNotSupportedException()
                                 .withMessage(
@@ -135,7 +136,7 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                         throw new OptionNotSupportedException()
                                 .withMessage("The requested filter is not supported in by this service!");
                     }
-                    if (!sosRequest.isSetResultFilter()) {
+                    if (!sosRequest.isSetResultFilter() && filterToRemove.isEmpty()) {
                         sosRequest.setResultFilter((Filter<?>)filter);
                     } 
                 }
@@ -187,7 +188,7 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
                     throw new OptionNotSupportedException()
                             .withMessage("Only temporal filters for valueReference = 'om:phenomenonTime' are yet supported!");
                 }
-                addTemporalFilter((TemporalFilter) filterPredicate, sosRequest);
+                addTemporalFilter((TemporalFilter) filterPredicate, sosRequest, filterToRemove);
                 filterToRemove.add(filterPredicate);
             } else if (filterPredicate instanceof SpatialFilter) {
                 if (sosRequest.isSetSpatialFilter()) {
@@ -309,9 +310,11 @@ public class GetFeatureDAO extends AbstractGetFeatureDAO {
      *            Temporal filter to add
      * @param request
      *            SOS GetObservation request
+     * @param filterToRemove 
      */
-    private void addTemporalFilter(TemporalFilter filter, GetObservationRequest request) {
+    private void addTemporalFilter(TemporalFilter filter, GetObservationRequest request, Set<Filter<?>> filterToRemove) {
         request.getTemporalFilters().add(filter);
+        filterToRemove.add(filter);
     }
 
     /**
