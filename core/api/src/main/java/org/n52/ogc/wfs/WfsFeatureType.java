@@ -41,7 +41,7 @@ import com.google.common.collect.Sets;
  * @since 1.0.0
  * 
  */
-public class WfsFeatureType {
+public class WfsFeatureType implements Comparable<WfsFeatureType> {
 
     /* 1..1 */
     private QName name;
@@ -381,6 +381,11 @@ public class WfsFeatureType {
      */
     public boolean isSetExtendenDescription() {
         return getExtendedDescription() != null;
+    }
+
+    @Override
+    public int compareTo(WfsFeatureType arg0) {
+        return getName().getLocalPart().compareTo(arg0.getName().getLocalPart());
     }
 
 }
