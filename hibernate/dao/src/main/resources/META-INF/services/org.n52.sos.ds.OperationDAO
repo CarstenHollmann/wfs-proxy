@@ -1,5 +1,0 @@
-org.n52.wfs.ds.GetFeatureDAO
-org.n52.wfs.ds.DescribeFeatureTypeDAO
-org.n52.wfs.ds.DescribeStoredQueriesDAO
-org.n52.wfs.ds.ListStoredQueriesDAO
-org.n52.wfs.ds.GetPropertyValueDAO

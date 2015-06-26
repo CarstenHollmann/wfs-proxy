@@ -1,6 +1,0 @@
-org.n52.wfs.decode.kvp.v20.GetCapabilitiesKvpDecoder
-org.n52.wfs.decode.kvp.v20.GetFeatureKvpDecoder
-org.n52.wfs.decode.kvp.v20.DescribeFeatureTypeKvpDecoder
-org.n52.wfs.decode.kvp.v20.DescribeStoredQueriesKvpDecoder
-org.n52.wfs.decode.kvp.v20.GetPropertyValueKvpDecoder
-org.n52.wfs.decode.kvp.v20.ListStoredQueriesKvpDecoder
