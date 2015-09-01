@@ -44,6 +44,8 @@ import org.n52.wfs.response.GetFeatureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
 /**
  * WFS DAO class for GetFeature operation
  *
@@ -71,15 +73,18 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
 
     private GetObservationResponse getGetObservationResponse(GetObservationRequest sosRequest)
             throws OwsExceptionReport {
-        Object object = CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(
-                httpClientHandler.doPost(CodingHelper.encodeObjectToXml(Sos2Constants.NS_SOS_20, sosRequest).xmlText(),
-                        MediaTypes.APPLICATION_XML)));
-        if (object instanceof GetObservationResponse) {
-            return (GetObservationResponse) object;
-        } else if (object instanceof OwsExceptionReport) {
-            throw new NoApplicableCodeException().causedBy((OwsExceptionReport)object).withMessage("error");
+        String sosResponse = httpClientHandler.doPost(CodingHelper.encodeObjectToXml(Sos2Constants.NS_SOS_20, sosRequest).xmlText(),
+                MediaTypes.APPLICATION_XML);
+        if (!Strings.isNullOrEmpty(sosResponse)) {
+            Object object = CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(sosResponse));
+            if (object instanceof GetObservationResponse) {
+                return (GetObservationResponse) object;
+            } else if (object instanceof OwsExceptionReport) {
+                throw new NoApplicableCodeException().causedBy((OwsExceptionReport)object).withMessage("error");
+            }
+            throw new NoApplicableCodeException().withMessage("Error while processing GetFeature!");
         }
-        throw new NoApplicableCodeException().withMessage("error");
+        throw new NoApplicableCodeException().withMessage("Error while querying GetCapabilities from SOS! Response is null!");
     }
 
 }
