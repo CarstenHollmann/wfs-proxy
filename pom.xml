@@ -112,6 +112,7 @@
     </modules>
 
     <properties>
+    	<conf.wfs.name>52n-wfs-proxy-webapp</conf.wfs.name>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <!-- Logger configuration -->

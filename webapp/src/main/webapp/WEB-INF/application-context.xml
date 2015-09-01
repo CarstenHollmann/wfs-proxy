@@ -41,27 +41,60 @@
 
     <!-- nothing to see here, move along -->
     <ctx:annotation-config />
-    <bean class="org.n52.iceland.config.spring.LifecycleBeanPostProcessor">
-        <description>This calls Constructable#init and Destroyable#destroy for all beans.</description>
+
+    <bean id="contextSwitcherSwapper" class="org.springframework.aop.target.HotSwappableTargetSource">
+        <description>Placeholder for the ContextSwitcher. This will be substituted as soon as
+            the ApplicationContext is refreshed.</description>
+        <constructor-arg>
+            <bean class="org.n52.sos.context.ContextSwitcherDummy" />
+        </constructor-arg>
     </bean>
 
-    <bean id="eventBus" class="org.n52.iceland.event.ServiceEventBus">
-        <property name="async" value="false" />
+    <bean id="contextSwitcher" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <description>contextSwitcher proxy that can be injected before the real
+            contextSwitcher is created. Allows switching and reloading the context</description>
+        <property name="targetSource">
+            <ref bean="contextSwitcherSwapper" />
+        </property>
     </bean>
 
-    <!--  settings related beans -->
-    <bean id="configLocationProvider" class="org.n52.iceland.service.ServletConfigLocationProvider" />
-    <bean id="settingsService" class="org.n52.iceland.config.SettingsServiceImpl" />
-    <bean id="adminUserService" class="org.n52.iceland.config.AdminUserServiceImpl" />
-    <bean id="settingsEncoder" class="org.n52.iceland.config.json.JsonSettingsEncoder" />
-    <bean id="activationService" class="org.n52.iceland.config.ActivationService" />
-    <bean id="activationDao" class="org.n52.iceland.config.json.JsonActivationDao" />
-    <bean id="settingsDao" class="org.n52.iceland.config.json.JsonSettingsDao" />
-    <bean id="adminUserDao" class="org.n52.iceland.config.json.JsonAdminUserDao" />
-    <bean id="settingValueFactory" class="org.n52.iceland.config.json.JsonSettingValueFactory" />
-    <bean id="jsonConfiguration" class="org.n52.iceland.config.json.JsonConfiguration">
-        <property name="fileName" value="configuration.json" />
-        <property name="writeTimeout" value="1000" />
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    <bean id="authenticationProvider" class="org.n52.sos.web.common.auth.SosAuthenticationProvider"/>
+
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider ref="authenticationProvider" />
+    </sec:authentication-manager>
+
+    <bean id="httpBasicAuthenticationFilter" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+        <constructor-arg ref="authenticationManager" />
+        <constructor-arg>
+            <bean class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+                <property name="realmName" value="52North SOS" />
+            </bean>
+        </constructor-arg>
     </bean>
-    <import resource="settings/*.xml" />
+
+    <sec:http pattern="/static/**" security="none" />
+    <sec:http pattern="/install/**" security="none" />
+    <sec:http pattern="/service" security="none" />
+    <sec:http pattern="/sos" security="none" />
+
+    <sec:http auto-config="true" use-expressions="true" disable-url-rewriting="true">
+        <sec:csrf disabled="true" />
+        <sec:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+        <sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+        <sec:intercept-url pattern="/login" access="hasRole('ROLE_ANONYMOUS')" />
+        <sec:custom-filter before="SECURITY_CONTEXT_FILTER" ref="httpBasicAuthenticationFilter" />
+        <sec:form-login username-parameter="username"
+                        password-parameter="password"
+                        login-page="/login"
+                        default-target-url="/admin/index"
+                        authentication-failure-url="/login?error=true"
+                        login-processing-url="/login" />
+        <sec:logout invalidate-session="true"
+                    delete-cookies="true"
+                    logout-url="/logout"
+                    logout-success-url="/index" />
+    </sec:http>
+
 </beans>

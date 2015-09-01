@@ -41,7 +41,251 @@
     <name>Iceland WFS-SOS Bridge - Webapp module</name>
     <description>Iceland WFS-SOS Bridge - Webapp module.</description>
     
+    <properties>
+    	<sos.version>5.0.0-SNAPSHOT</sos.version>
+    </properties>
+    
+        <build>
+        <finalName>${conf.wfs.name}##${project.version}</finalName>
+        <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Suite*.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF/classes</targetPath>
+                        </resource>
+                    </webResources>
+                    <overlays>
+                        <overlay>
+                            <groupId>org.n52.sensorweb.sos</groupId>
+                            <artifactId>views</artifactId>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings
+                only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.6,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
+        <!-- LOGGING -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+             <version>1.7.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+             <version>1.7.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+
+        <!-- CORE -->
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
+
+        <!-- CODING -->
+
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-ows-v110</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-sensorML</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-sensorML-v101</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-sensorML-v20</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-sos-v20</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-sos-v100</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-json</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-wml-v20</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-kvp</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>coding-soap</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+
+        <!-- #### Spring dependencies #### -->
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.3</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+        <!-- ADMINISTRATION INTERFACE -->
+
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>client-controller</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>install-controller</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>admin-controller</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>common-controller</artifactId>
+            <version>${sos.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb.sos</groupId>
+            <artifactId>views</artifactId>
+            <version>${sos.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <!-- THIRD PARTY -->
+        <dependency>
+			<groupId>org.n52.sensorweb.sos</groupId>
+			<artifactId>third-party-ncname-resolver</artifactId>
+			<version>${sos.version}</version>
+        </dependency>
+
+
+		<dependency>
+    		<groupId>org.n52.wfsproxy</groupId>
+    		<artifactId>wfs-proxy-core</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.n52.wfsproxy</groupId>
+    		<artifactId>wfs-proxy-coding</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.n52.wfsproxy</groupId>
+    		<artifactId>wfs-proxy-external</artifactId>
+    	</dependency>
+        <dependency>
+            <groupId>org.n52.iceland</groupId>
+            <artifactId>iceland</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.n52.sensorweb</groupId>
+            <artifactId>52n-xml-wfs-v20</artifactId>
+        </dependency>
     	<dependency>
     		<groupId>org.n52.wfsproxy</groupId>
     		<artifactId>wfs-proxy-core</artifactId>
@@ -67,26 +311,6 @@
             <artifactId>52n-xml-wfs-v20</artifactId>
         </dependency>
         
-        <!-- #### Spring dependencies #### -->
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>4.1.6.RELEASE</version>
-            <scope>runtime</scope>
-        </dependency>
-        
-         <dependency>
-             <groupId>com.thetransactioncompany</groupId>
-             <artifactId>cors-filter</artifactId>
-             <version>2.3</version>
-             <scope>runtime</scope>
-         </dependency>
-         <dependency>
-             <groupId>commons-io</groupId>
-             <artifactId>commons-io</artifactId>
-             <version>2.4</version>
-         </dependency>
     </dependencies>
 
 </project>
