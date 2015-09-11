@@ -37,6 +37,8 @@ import java.util.TimerTask;
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
+import org.n52.iceland.cache.ContentCache;
+import org.n52.iceland.cache.ContentCacheController;
 import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.lifecycle.Constructable;
@@ -57,9 +59,11 @@ import org.n52.iceland.util.Constants;
 import org.n52.iceland.util.DateTimeHelper;
 import org.n52.ogc.wfs.WfsElement;
 import org.n52.ogc.wfs.WfsValueList;
+import org.n52.sos.cache.SosContentCache;
 import org.n52.sos.ogc.sos.SosEnvelope;
 import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.XmlHelper;
+import org.n52.wfs.cache.InMemoryCacheImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,26 +80,16 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.0.0
  *
  */
-public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler implements Constructable, Destroyable{
+public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler {
     
     private static final Logger log = LoggerFactory.getLogger(GetCapabilitiesHandler.class);
-
-    @Inject
-    private HttpClientHandler httpClientHandler;
-
-    private OwsCapabilities owsCapabilities;
-
-    private int capabilitiesValidMinutes = 60;
-    
-    private final Timer timer = new Timer("52n-wfs-capabilities-updater", true);
-    private TimerTask current = null;
 
     public GetCapabilitiesHandler() {
         super();
     }
 
     protected SosEnvelope wgs84BoundingBoxes(String featureType) throws OwsExceptionReport {
-        Optional<OwsOperation> operation = getOperationGetObservation(getCapabilities());
+        Optional<OwsOperation> operation = getOperationGetObservation(getWfsCache().getCapabilities());
         if (operation.isPresent()) {
             SortedMap<String, List<OwsParameterValue>> parameterValues = operation.get().getParameterValues();
             if (parameterValues.containsKey(Sos2Constants.GetObservationParams.spatialFilter.name())) {
@@ -116,7 +110,7 @@ public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler im
     }
 
     protected WfsElement getPhenomenonTimeElement(String featureType) throws OwsExceptionReport {
-        Optional<OwsOperation> operation = getOperationGetObservation(getCapabilities());
+        Optional<OwsOperation> operation = getOperationGetObservation(getWfsCache().getCapabilities());
         if (operation.isPresent()) {
             SortedMap<String, List<OwsParameterValue>> parameterValues = operation.get().getParameterValues();
             if (parameterValues.containsKey(Sos2Constants.GetObservationParams.temporalFilter.name())) {
@@ -150,79 +144,8 @@ public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler im
                 .findOperation(OwsOperationPredicates.name(SosConstants.Operations.GetObservation.name()));
     }
 
-    private OwsCapabilities getCapabilities() throws OwsExceptionReport {
-        if (owsCapabilities == null) {
-            updateCapabilities();
-        }
-        return owsCapabilities;
-    }
-
-    private void updateCapabilities() throws OwsExceptionReport {
-        Object object =
-                CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(httpClientHandler.doGet(getParameter())));
-        if (object instanceof GetCapabilitiesResponse) {
-            setOwsCapabilities(((GetCapabilitiesResponse) object).getCapabilities());
-        } else if (object instanceof OwsCapabilities) {
-            setOwsCapabilities((OwsCapabilities) object);
-        } else if (object instanceof OwsExceptionReport) {
-            throw new NoApplicableCodeException().causedBy((OwsExceptionReport)object).withMessage("error");
-        }
-        throw new NoApplicableCodeException().withMessage("error");
-    }
-
-    private void setOwsCapabilities(OwsCapabilities owsCapabilities) {
-        this.owsCapabilities = owsCapabilities;
-    }
-
-    private Map<String, List<String>> getParameter() {
-        Map<String, List<String>> parameter = Maps.newHashMap();
-        parameter.put(OWSConstants.GetCapabilitiesParams.service.name(), Lists.newArrayList(SosConstants.SOS));
-        parameter.put(OWSConstants.GetCapabilitiesParams.request.name(),
-                Lists.newArrayList(OWSConstants.Operations.GetCapabilities.name()));
-        parameter.put(OWSConstants.GetCapabilitiesParams.Sections.name(),
-                Lists.newArrayList(SosConstants.CapabilitiesSections.OperationsMetadata.name()));
-        return parameter;
+    private InMemoryCacheImpl getWfsCache() {
+        return (InMemoryCacheImpl) getCacheController().getCache();
     }
     
-    private void cancelCurrent() {
-        if (this.current != null) {
-            this.current.cancel();
-            log.debug("Current {} canceled", UpdateCapabilitiesTimerTask.class.getSimpleName());
-        }
-    }
-
-    private void cancelTimer() {
-        if (this.timer != null) {
-            this.timer.cancel();
-            log.debug("Capabilities Update timer canceled.");
-        }
-    }
-
-    @Override
-    public void init() {
-        current = new UpdateCapabilitiesTimerTask();
-        log.debug("Next CapabilitiesUpdate in {}m", capabilitiesValidMinutes);
-        timer.schedule(current, 0, (capabilitiesValidMinutes*60000));
-        
-    }
-
-    @Override
-    public void destroy() {
-        cancelCurrent();
-        cancelTimer();
-    }
-    
-    private class UpdateCapabilitiesTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            try {
-                updateCapabilities();
-                log.info("Timertask: capabilities update successful!");
-            } catch (OwsExceptionReport e) {
-                log.error("Fatal error: Timertask couldn't update capabilities! Switch log level to DEBUG to get more details.");
-                log.debug("Exception thrown", e);
-            }
-        }
-    }
-
 }

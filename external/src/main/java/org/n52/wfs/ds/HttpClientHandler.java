@@ -34,7 +34,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -46,6 +45,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.n52.iceland.config.annotation.Configurable;
 import org.n52.iceland.config.annotation.Setting;
+import org.n52.iceland.exception.CodedException;
+import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.lifecycle.Constructable;
 import org.n52.iceland.lifecycle.Destroyable;
@@ -58,7 +59,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Joiner;
 
 @Configurable
-public class HttpClientHandler implements Constructable, Destroyable {
+public class HttpClientHandler implements Constructable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GetFeatureHandler.class);
     
@@ -78,32 +79,19 @@ public class HttpClientHandler implements Constructable, Destroyable {
         try {
             httpGet = new HttpGet(getGetUrl(url, parameter));
             return getContent(httpclient.execute(httpGet));
-        } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (URISyntaxException | IOException e) {
+            throw new NoApplicableCodeException().causedBy(e);
         }
-        return null;
     }
 
-    public String doPost(String content, MediaType contentType) {
+    public String doPost(String content, MediaType contentType) throws CodedException {
         try {
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setEntity(new StringEntity(content, ContentType.create(contentType.toString(), "UTF-8")));
-        return getContent(httpclient.execute(httpPost));
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(new StringEntity(content, ContentType.create(contentType.toString(), "UTF-8")));
+            return getContent(httpclient.execute(httpPost));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new NoApplicableCodeException().causedBy(e);
         }
-        return null;
     }
 
     private String getContent(CloseableHttpResponse response) throws IOException {
@@ -125,9 +113,9 @@ public class HttpClientHandler implements Constructable, Destroyable {
     @Override
     public void init() {
         httpclient = HttpClients.createDefault();
+//        httpclient = HttpClients.custom().setConnectionManager(new PoolingHttpClientConnectionManager()).setConnectionManagerShared(true).build();
     }
 
-    @Override
     public void destroy() {
         if (httpclient != null) {
             try {

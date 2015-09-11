@@ -117,7 +117,7 @@
         
         <!-- Logger configuration -->
         <config.logger.fileappender.filepath>${catalina.base}/logs</config.logger.fileappender.filepath>
-        <config.logger.fileappender.filename>${conf.sos.name}</config.logger.fileappender.filename>
+        <config.logger.fileappender.filename>${conf.wfs.name}</config.logger.fileappender.filename>
         <config.logger.level>INFO</config.logger.level>
         <config.logger.level.test.n52>ERROR</config.logger.level.test.n52>
         <config.logger.level.test.global>ERROR</config.logger.level.test.global>

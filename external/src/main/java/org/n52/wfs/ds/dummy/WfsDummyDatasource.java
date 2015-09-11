@@ -26,7 +26,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
  */
-package org.n52.wfs.ds;
+package org.n52.wfs.ds.dummy;
 
 import java.util.Map;
 import java.util.Properties;

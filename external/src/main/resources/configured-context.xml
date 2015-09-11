@@ -39,4 +39,25 @@
     <!-- <bean id="cacheFeederDao" class="org.n52.wfs.ds.WfsCacheFeederHandler"/> -->
 
 	<bean id="httpClientHandler" class="org.n52.wfs.ds.HttpClientHandler"/>
+	<bean id="cacheFeederDao" class="org.n52.wfs.ds.WfsCacheFeederDAO"/>
+	
+	<!-- caching -->
+	<bean id="contentCacheController" class="org.n52.iceland.cache.ctrl.ContentCacheControllerImpl"/>
+    <bean id="cachePersistenceStrategy"  class="org.n52.iceland.cache.ctrl.persistence.AsyncCachePersistenceStrategy" />
+    <bean id="contentCacheFactory" class="org.n52.wfs.cache.ContentCacheFactoryImpl"/>
+    <bean id="completeCacheUpdateFactory" class="org.n52.wfs.cache.CompleteCacheUpdateFactoryImpl"/>
+	
+	<!-- dummies -->
+	<bean id="deleteDeletedObservationsDAO" class="org.n52.wfs.ds.dummy.DummyDeleteObservationHandler"/>
+          
+	<bean id="renameDAO" class="org.n52.wfs.ds.dummy.DummyRenameHandler"/>
+          
+    <bean id="generalQueryDAO" class="org.n52.wfs.ds.dummy.DummyGeneralQueryHandler"/>
+
+    <bean id="procedureFormatDAO" class="org.n52.wfs.ds.dummy.DummyProcedureFormatHandler"/>
+          
+    <bean id="featureQueryHandler" class="org.n52.wfs.ds.dummy.DummyFeatureQueryHandler"/>
+    
+    <bean id="dataConnectionProvider" class="org.n52.wfs.ds.dummy.DummyConnectionProvider"/>
+          
 </beans>
