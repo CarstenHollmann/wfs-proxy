@@ -76,6 +76,7 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
         String sosResponse = httpClientHandler.doPost(CodingHelper.encodeObjectToXml(Sos2Constants.NS_SOS_20, sosRequest).xmlText(),
                 MediaTypes.APPLICATION_XML);
         if (!Strings.isNullOrEmpty(sosResponse)) {
+            LOGGER.debug("SOS response: {}", sosResponse);
             Object object = CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(sosResponse));
             if (object instanceof GetObservationResponse) {
                 return (GetObservationResponse) object;

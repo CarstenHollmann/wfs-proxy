@@ -78,6 +78,7 @@ public class HttpClientHandler implements Constructable {
         HttpGet httpGet;
         try {
             httpGet = new HttpGet(getGetUrl(url, parameter));
+            LOGGER.debug("SOS request: {}", getGetUrl(url, parameter));
             return getContent(httpclient.execute(httpGet));
         } catch (URISyntaxException | IOException e) {
             throw new NoApplicableCodeException().causedBy(e);
@@ -87,6 +88,7 @@ public class HttpClientHandler implements Constructable {
     public String doPost(String content, MediaType contentType) throws CodedException {
         try {
             HttpPost httpPost = new HttpPost(url);
+            LOGGER.debug("SOS request: {}", content);
             httpPost.setEntity(new StringEntity(content, ContentType.create(contentType.toString(), "UTF-8")));
             return getContent(httpclient.execute(httpPost));
         } catch (IOException e) {
