@@ -106,7 +106,7 @@
                 "request":"GetFeature",
                 "namespaces":"xmlns(om,http://www.opengis.net/om/2.0)",
                 "typenames":"om:OM_Observation",
-                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AG</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM_PedestrianCounting_AlfredP_T</Literal></PropertyIsEqualTo></Or></Filter>"
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AG</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AlfredP_T</Literal></PropertyIsEqualTo></Or></Filter>"
             },
             "service":"WFS",
             "version":"2.0.0",
@@ -239,7 +239,7 @@
                 "request":"GetFeature",
                 "namespaces":"xmlns(om,http://www.opengis.net/om/2.0)",
                 "typenames":"om:OM_Observation",
-                "bbox":"om:featureOfInterest/*/sams:shape,-40.0,140.0,-30.0,150.0,http://www.opengis.net/def/crs/EPSG/0/4326"
+                "bbox":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><BBOX><ValueReference>om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape</ValueReference><gml:Envelope srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\"><gml:lowerCorner>-40.0 140.0</gml:lowerCorner><gml:upperCorner>-30.0 150.0</gml:upperCorner></gml:Envelope></BBOX></Filter>"
             },
             "service":"WFS",
             "version":"2.0.0",
