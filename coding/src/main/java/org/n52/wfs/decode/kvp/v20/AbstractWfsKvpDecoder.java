@@ -40,6 +40,7 @@ import java.util.RandomAccess;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.naming.ConfigurationException;
 import javax.xml.namespace.QName;
 
@@ -91,6 +92,7 @@ public abstract class AbstractWfsKvpDecoder implements
 
     protected static final int VALID_COORDINATE_SIZE = 4;
 
+    @Inject
     private GeometryHandler geometryHandler;
 
     private String srsNamePrevixV1;
@@ -199,7 +201,7 @@ public abstract class AbstractWfsKvpDecoder implements
 
             boolean hasSrid = false;
 
-            spatialFilter.setValueReference(parameterValues.get(0));
+//            spatialFilter.setValueReference(parameterValues.get(0));
 
             int srid = getDefaultEPSG();
             if (parameterValues.get(parameterValues.size() - 1)
@@ -214,9 +216,9 @@ public abstract class AbstractWfsKvpDecoder implements
             List<String> coordinates;
             if (hasSrid) {
                 coordinates = parameterValues
-                        .subList(1, parameterValues.size() - 1);
+                        .subList(0, parameterValues.size() - 1);
             } else {
-                coordinates = parameterValues.subList(1, parameterValues.size());
+                coordinates = parameterValues.subList(0, parameterValues.size());
             }
 
             if (coordinates.size() != VALID_COORDINATE_SIZE) {

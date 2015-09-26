@@ -74,7 +74,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"minimal",
+            "title":"minimal - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -93,7 +93,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"procedure",
+            "title":"procedure - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -112,7 +112,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"procedures",
+            "title":"procedures - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -131,7 +131,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"observedProperty",
+            "title":"observedProperty - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -150,7 +150,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"featureOfInterest",
+            "title":"featureOfInterest - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -169,7 +169,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"featureOfInterests",
+            "title":"featureOfInterests - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -188,7 +188,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"TEqual-TemporalFilter",
+            "title":"TEqual-TemporalFilter - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -207,7 +207,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"During-TemporalFilter",
+            "title":"During-TemporalFilter - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -226,7 +226,7 @@
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"all filter",
+            "title":"all filter - om:OM_Observation",
             "headers":{
                 "Accept":"application/xml"
             },
@@ -237,15 +237,128 @@
                 "service":"WFS",
                 "version":"2.0.0",
                 "request":"GetFeature",
-                "namespaces":"xmlns(om,http://www.opengis.net/om/2.0)",
-                "typenames":"om:OM_Observation",
-                "bbox":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><BBOX><ValueReference>om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape</ValueReference><gml:Envelope srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\"><gml:lowerCorner>-40.0 140.0</gml:lowerCorner><gml:upperCorner>-30.0 150.0</gml:upperCorner></gml:Envelope></BBOX></Filter>"
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature"
             },
             "service":"WFS",
             "version":"2.0.0",
             "binding":"application/x-kvp",
             "operation":"GetFeature",
-            "title":"bbox",
+            "title":"minimal - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AG</Literal></PropertyIsEqualTo></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"procedure - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AG</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/AlfredP_T</Literal></PropertyIsEqualTo></Or></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"procedures - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>urn:x-ogc:def:phenomenon:OGC:PeopleCount6Min</Literal></PropertyIsEqualTo></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"observedProperty - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>OM/PedestrianCounting/Spr13_</Literal></PropertyIsEqualTo></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"featureOfInterest - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><Or><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>OM/PedestrianCounting/Spr13_</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>OM/PedestrianCounting/WatCit_T</Literal></PropertyIsEqualTo></Or></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"featureOfInterests - sams:SF_SpatialSamplingFeature",
+            "headers":{
+                "Accept":"application/xml"
+            },
+            "method":"GET"
+        },
+        {
+            "param":{
+                "service":"WFS",
+                "version":"2.0.0",
+                "request":"GetFeature",
+                "namespaces":"xmlns(sams,http://www.opengis.net/samplingSpatial/2.0)",
+                "typenames":"sams:SF_SpatialSamplingFeature",
+                "filter":"<Filter xmlns=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0.0/filter.xsd http://www.opengis.net/gml/3.2 http://www.opengis.net/gml/3.2.1/base/gml.xsd\"><And><Or><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/Spr13_</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:procedure</ValueReference><Literal>OM/PedestrianCounting/WatCit_T</Literal></PropertyIsEqualTo></Or><PropertyIsEqualTo><ValueReference>om:observedProperty</ValueReference><Literal>urn:x-ogc:def:phenomenon:OGC:PeopleCount6Min</Literal></PropertyIsEqualTo><Or><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>OM/PedestrianCounting/Spr13_</Literal></PropertyIsEqualTo><PropertyIsEqualTo><ValueReference>om:featureOfInterest</ValueReference><Literal>OM/PedestrianCounting/WatCit_T</Literal></PropertyIsEqualTo></Or><BBOX><ValueReference>om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape</ValueReference><gml:Envelope srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\"><gml:lowerCorner>-40.0 140.0</gml:lowerCorner><gml:upperCorner>-30.0 150.0</gml:upperCorner></gml:Envelope></BBOX></And></Filter>"
+            },
+            "service":"WFS",
+            "version":"2.0.0",
+            "binding":"application/x-kvp",
+            "operation":"GetFeature",
+            "title":"all filter - sams:SF_SpatialSamplingFeature",
             "headers":{
                 "Accept":"application/xml"
             },

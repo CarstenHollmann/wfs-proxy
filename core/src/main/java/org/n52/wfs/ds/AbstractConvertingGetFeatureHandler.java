@@ -89,7 +89,7 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
         sosRequest.setService(SosConstants.SOS);
         sosRequest.setVersion(Sos2Constants.SERVICEVERSION);
         if (request.isSetBBox()) {
-            sosRequest.setSpatialFilter(request.getBBox());
+            sosRequest.setSpatialFilter(checkBBox(request.getBBox()));
         }
         convertFilterForGetObservation(sosRequest, request);
         return sosRequest;
@@ -377,10 +377,17 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
         sosRequest.setService(SosConstants.SOS);
         sosRequest.setVersion(Sos2Constants.SERVICEVERSION);
         if (request.isSetBBox()) {
-            sosRequest.setSpatialFilters(Lists.newArrayList(request.getBBox()));
+            sosRequest.setSpatialFilters(Lists.newArrayList(checkBBox(request.getBBox())));
         }
         convertFilterForGetFeatureOfInteres(sosRequest, request);
         return sosRequest;
+    }
+
+    private SpatialFilter checkBBox(SpatialFilter bBox) {
+        if (!bBox.hasValueReference()) {
+            bBox.setValueReference("om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape");
+        }
+        return bBox;
     }
 
     private void convertFilterForGetFeatureOfInteres(GetFeatureOfInterestRequest sosRequest,
@@ -435,7 +442,11 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
                 convertComparisonFilter((ComparisonFilter) filterPredicate, sosRequest, equalityCheck, filterToRemove);
             } else if (filterPredicate instanceof SpatialFilter) {
                 if (sosRequest.isSetSpatialFilters()) {
-                    sosRequest.getSpatialFilters().add((SpatialFilter) filterPredicate);
+                    if (sosRequest.getSpatialFilters() == null) {
+                        sosRequest.setSpatialFilters(Lists.newArrayList((SpatialFilter) filterPredicate));
+                    } else {
+                        sosRequest.getSpatialFilters().add((SpatialFilter) filterPredicate);
+                    }
                 } else {
                     sosRequest.setSpatialFilters(Lists.newArrayList((SpatialFilter) filterPredicate));
                 }
@@ -490,7 +501,11 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
      *            SOS GetObservation request
      */
     private void addProcedureIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
-        request.getProcedures().add(filter.getValue());
+        if (request.getProcedures() == null ) {
+            request.setProcedures(Lists.newArrayList(filter.getValue()));
+        } else {
+            request.getProcedures().add(filter.getValue());
+        }
     }
 
     /**
@@ -503,7 +518,11 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
      *            SOS GetObservation request
      */
     private void addObservedPropertyIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
-        request.getObservedProperties().add(filter.getValue());
+        if (request.getObservedProperties() == null ) {
+            request.setObservedProperties(Lists.newArrayList(filter.getValue()));
+        } else {
+            request.getObservedProperties().add(filter.getValue());
+        }
     }
 
     /**
@@ -516,7 +535,11 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
      *            SOS GetObservation request
      */
     private void addFeatureOfInterestIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
-        request.getFeatureIdentifiers().add(filter.getValue());
+        if (request.getFeatureIdentifiers() == null ) {
+            request.setFeatureIdentifiers(Lists.newArrayList(filter.getValue()));
+        } else {
+            request.getFeatureIdentifiers().add(filter.getValue());
+        }
     }
 
     /**
