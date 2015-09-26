@@ -49,7 +49,6 @@ import org.n52.iceland.exception.CodedException;
 import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.lifecycle.Constructable;
-import org.n52.iceland.lifecycle.Destroyable;
 import org.n52.iceland.util.CollectionHelper;
 import org.n52.iceland.util.Constants;
 import org.n52.iceland.util.http.MediaType;
@@ -90,7 +89,21 @@ public class HttpClientHandler implements Constructable {
             HttpPost httpPost = new HttpPost(url);
             LOGGER.debug("SOS request: {}", content);
             httpPost.setEntity(new StringEntity(content, ContentType.create(contentType.toString(), "UTF-8")));
-            return getContent(httpclient.execute(httpPost));
+            int counter = 4;
+            CloseableHttpResponse response = null;
+            do {
+                try {
+                    response = httpclient.execute(httpPost); 
+                } catch (IOException e) {
+                    if (counter == 0) {
+                        throw new NoApplicableCodeException().causedBy(e);
+                    } else {
+                        LOGGER.info("Error while querying data '{}'. {} retries before throwing exception", e, counter);
+                    }
+                    counter--;
+                }
+            } while (response == null && counter >= 0);
+            return getContent(response);
         } catch (IOException e) {
             throw new NoApplicableCodeException().causedBy(e);
         }
