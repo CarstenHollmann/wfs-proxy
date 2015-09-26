@@ -37,8 +37,11 @@ import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OptionNotSupportedException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.filter.FilterConstants.BinaryLogicOperator;
+import org.n52.iceland.ogc.gml.AbstractFeature;
+import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.iceland.ogc.sos.Sos2Constants;
 import org.n52.iceland.ogc.sos.SosConstants;
+import org.n52.ogc.wfs.AbstractFeatureMember;
 import org.n52.ogc.wfs.OmObservationMember;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsFeatureCollection;
@@ -49,12 +52,19 @@ import org.n52.sos.ogc.filter.ComparisonFilter;
 import org.n52.sos.ogc.filter.Filter;
 import org.n52.sos.ogc.filter.SpatialFilter;
 import org.n52.sos.ogc.filter.TemporalFilter;
+import org.n52.sos.ogc.om.features.FeatureCollection;
+import org.n52.sos.ogc.om.features.SfConstants;
+import org.n52.sos.ogc.om.features.samplingFeatures.SamplingFeature;
+import org.n52.sos.request.GetFeatureOfInterestRequest;
 import org.n52.sos.request.GetObservationRequest;
+import org.n52.sos.response.GetFeatureOfInterestResponse;
 import org.n52.sos.response.GetObservationResponse;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFeatureHandler {
     
@@ -99,28 +109,30 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
             throws OwsExceptionReport {
         if (request.isSetQueries()) {
             for (WfsQuery query : request.getQueries()) {
-                if (query.isSetSelectionClause()) {
-                    int binaryLogicOpLevelCounter = 1;
-                    AbstractSelectionClause filter = query.getSelectionClause();
-                    HashSet<Filter<?>> filterToRemove = new HashSet<>();
-                    if (filter instanceof BinaryLogicFilter) {
-                        convertBinaryLogicFilter((BinaryLogicFilter) filter, sosRequest, binaryLogicOpLevelCounter);
-                    } else if (filter instanceof ComparisonFilter) {
-                        convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, filterToRemove);
-                    } else if (filter instanceof TemporalFilter) {
-                        addTemporalFilter((TemporalFilter) filter, sosRequest, filterToRemove);
-                    } else if (filter instanceof SpatialFilter) {
-                        throw new OptionNotSupportedException()
-                                .withMessage(
-                                        "SpatialOp filter is not supported in '{}'. Please use parameter '{}' for spatial queries!",
-                                        WfsConstants.AdHocQueryParams.Filter.name(),
-                                        WfsConstants.AdHocQueryParams.BBox.name());
-                    } else {
-                        throw new OptionNotSupportedException()
-                                .withMessage("The requested filter is not supported in by this service!");
-                    }
-                    if (!sosRequest.isSetResultFilter() && filterToRemove.isEmpty()) {
-                        sosRequest.setResultFilter((Filter<?>)filter);
+                if (query.getTypeNames().contains(OmConstants.QN_OM_20_OBSERVATION)) {
+                    if (query.isSetSelectionClause()) {
+                        int binaryLogicOpLevelCounter = 1;
+                        AbstractSelectionClause filter = query.getSelectionClause();
+                        HashSet<Filter<?>> filterToRemove = new HashSet<>();
+                        if (filter instanceof BinaryLogicFilter) {
+                            convertBinaryLogicFilter((BinaryLogicFilter) filter, sosRequest, binaryLogicOpLevelCounter);
+                        } else if (filter instanceof ComparisonFilter) {
+                            convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, filterToRemove);
+                        } else if (filter instanceof TemporalFilter) {
+                            addTemporalFilter((TemporalFilter) filter, sosRequest, filterToRemove);
+                        } else if (filter instanceof SpatialFilter) {
+                            throw new OptionNotSupportedException()
+                                    .withMessage(
+                                            "SpatialOp filter is not supported in '{}'. Please use parameter '{}' for spatial queries!",
+                                            WfsConstants.AdHocQueryParams.Filter.name(),
+                                            WfsConstants.AdHocQueryParams.BBox.name());
+                        } else {
+                            throw new OptionNotSupportedException()
+                                    .withMessage("The requested filter is not supported in by this service!");
+                        }
+                        if (!sosRequest.isSetResultFilter() && filterToRemove.isEmpty()) {
+                            sosRequest.setResultFilter((Filter<?>)filter);
+                        }
                     }
                 }
             }
@@ -329,12 +341,182 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
         WfsFeatureCollection featureCollection =
                 new WfsFeatureCollection(new DateTime(), WfsConstants.NUMBER_MATCHED_UNKNOWN);
 
+        convertSosGetObservationToWfsGetFeature(sosResponse, featureCollection);
+
+        response.setFeatureCollection(featureCollection);
+        return response;
+    }
+    
+    
+    protected WfsFeatureCollection convertSosGetObservationToWfsGetFeature(GetObservationResponse sosResponse, WfsFeatureCollection featureCollection) {
         sosResponse.getObservationCollection()
                 .stream().map(OmObservationMember::new)
                 .forEach(featureCollection::addMember);
 
-        response.setFeatureCollection(featureCollection);
-        return response;
+        return featureCollection;
+    }
+    
+    
+    protected void convertSosGetFeatureOfInterestRequestToWfsGetFeature(GetFeatureOfInterestResponse sosResponse, WfsFeatureCollection featureCollection) {
+        if (sosResponse.getAbstractFeature() != null) {
+            if (sosResponse.getAbstractFeature() instanceof FeatureCollection) {
+                FeatureCollection collection = (FeatureCollection) sosResponse.getAbstractFeature();
+                for (AbstractFeature abstractFeature : collection.getMembers().values()) {
+                    featureCollection.addMember(new AbstractFeatureMember(abstractFeature));
+                }
+//                collection.getMembers().values().stream().map(AbstractFeatureMember::new)
+//                .forEach(featureCollection::addMember);
+            } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
+                featureCollection.addMember(new AbstractFeatureMember(sosResponse.getAbstractFeature()));
+            }
+        }
+    }
+
+    protected GetFeatureOfInterestRequest convertWfsGetFeatureToSosGetFeatureOfInterestRequest(GetFeatureRequest request) throws OwsExceptionReport {
+        GetFeatureOfInterestRequest sosRequest = new GetFeatureOfInterestRequest();
+        sosRequest.setService(SosConstants.SOS);
+        sosRequest.setVersion(Sos2Constants.SERVICEVERSION);
+        if (request.isSetBBox()) {
+            sosRequest.setSpatialFilters(Lists.newArrayList(request.getBBox()));
+        }
+        convertFilterForGetFeatureOfInteres(sosRequest, request);
+        return sosRequest;
+    }
+
+    private void convertFilterForGetFeatureOfInteres(GetFeatureOfInterestRequest sosRequest,
+            GetFeatureRequest request) throws OwsExceptionReport {
+        if (request.isSetQueries()) {
+            for (WfsQuery query : request.getQueries()) {
+                if (query.getTypeNames().contains(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
+                    if (query.isSetSelectionClause()) {
+                        int binaryLogicOpLevelCounter = 1;
+                        AbstractSelectionClause filter = query.getSelectionClause();
+                        HashSet<Filter<?>> filterToRemove = new HashSet<>();
+                        if (filter instanceof BinaryLogicFilter) {
+                            convertBinaryLogicFilter((BinaryLogicFilter) filter, sosRequest, binaryLogicOpLevelCounter);
+                        } else if (filter instanceof ComparisonFilter) {
+                            convertComparisonFilter((ComparisonFilter) filter, sosRequest, null, filterToRemove);
+                        } else if (filter instanceof SpatialFilter) {
+                            throw new OptionNotSupportedException()
+                                    .withMessage(
+                                            "SpatialOp filter is not supported in '{}'. Please use parameter '{}' for spatial queries!",
+                                            WfsConstants.AdHocQueryParams.Filter.name(),
+                                            WfsConstants.AdHocQueryParams.BBox.name());
+                        } else {
+                            throw new OptionNotSupportedException()
+                                    .withMessage("The requested filter is not supported in by this service!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void convertBinaryLogicFilter(BinaryLogicFilter filter, GetFeatureOfInterestRequest sosRequest,
+            int binaryLogicOpLevelCounter) throws OwsExceptionReport {
+        ComparisonFilterEquality equalityCheck = null;
+        int currentBinaryLogicOpLevel = binaryLogicOpLevelCounter + 1;
+        Set<Filter<?>> filterToRemove = new HashSet<>();
+        for (Filter<?> filterPredicate : filter.getFilterPredicates()) {
+            if (filterPredicate instanceof BinaryLogicFilter) {
+                if (currentBinaryLogicOpLevel >= 3) {
+                    throw new OptionNotSupportedException()
+                            .withMessage("BinaryLogicOps is not supported as 3rd level sub-filter!");
+                }
+                BinaryLogicFilter binLogFilter = (BinaryLogicFilter) filterPredicate;
+                if (BinaryLogicOperator.And.equals(binLogFilter.getOperator()) && currentBinaryLogicOpLevel >= 2) {
+                    throw new OptionNotSupportedException()
+                            .withMessage("'And'-BinaryLogicOps is not supported as sub-filter!");
+                }
+                convertBinaryLogicFilter(binLogFilter, sosRequest, currentBinaryLogicOpLevel);
+                if (binLogFilter.getFilterPredicates().isEmpty()) {
+                    filterToRemove.add(binLogFilter);
+                }
+            } else if (filterPredicate instanceof ComparisonFilter) {
+                convertComparisonFilter((ComparisonFilter) filterPredicate, sosRequest, equalityCheck, filterToRemove);
+            } else if (filterPredicate instanceof SpatialFilter) {
+                if (sosRequest.isSetSpatialFilters()) {
+                    sosRequest.getSpatialFilters().add((SpatialFilter) filterPredicate);
+                } else {
+                    sosRequest.setSpatialFilters(Lists.newArrayList((SpatialFilter) filterPredicate));
+                }
+                filterToRemove.add(filterPredicate);
+            } else {
+                throw new OptionNotSupportedException()
+                        .withMessage("The requested filter is not supported in by this service!");
+            }
+        }
+        filter.getFilterPredicates().removeAll(filterToRemove);
+    }
+    
+    private void convertComparisonFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request,
+            ComparisonFilterEquality equalityCheck, Set<Filter<?>> filterToRemove) throws CodedException {
+        ComparisonFilterEquality currentComparisonFilterEquality =
+                ComparisonFilterEquality.fromValue(filter.getValueReference());
+        if (equalityCheck == null) {
+            equalityCheck = currentComparisonFilterEquality;
+        }
+        if (currentComparisonFilterEquality.equals(equalityCheck)) {
+            switch (currentComparisonFilterEquality) {
+            case Procedure:
+                addProcedureIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
+                break;
+            case ObervedProperty:
+                addObservedPropertyIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
+                break;
+            case FeatureOfInterest:
+                addFeatureOfInterestIdentifierFromFilter(filter, request);
+                filterToRemove.add(filter);
+                break;
+            default:
+                throw new NoApplicableCodeException().withMessage(
+                        "The requested valueReference ({}) is not supported by this service",
+                        filter.getValueReference());
+            }
+        } else {
+            throw new NoApplicableCodeException()
+                    .withMessage("The requested filter in an 'Or' filter do not have the same valueReferende");
+        }
+    }
+    
+    /**
+     * Add procedure parameter value to SOS GetObservation request from
+     * comparison filter
+     *
+     * @param filter
+     *            Comparison filter with procedure parameter value
+     * @param request
+     *            SOS GetObservation request
+     */
+    private void addProcedureIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
+        request.getProcedures().add(filter.getValue());
+    }
+
+    /**
+     * Add observedProperty parameter value to SOS GetObservation request from
+     * comparison filter
+     *
+     * @param filter
+     *            Comparison filter with observedProperty parameter value
+     * @param request
+     *            SOS GetObservation request
+     */
+    private void addObservedPropertyIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
+        request.getObservedProperties().add(filter.getValue());
+    }
+
+    /**
+     * Add featureOfInterest parameter value to SOS GetObservation request from
+     * comparison filter
+     *
+     * @param filter
+     *            Comparison filter with featureOfInterest parameter value
+     * @param request
+     *            SOS GetObservation request
+     */
+    private void addFeatureOfInterestIdentifierFromFilter(ComparisonFilter filter, GetFeatureOfInterestRequest request) {
+        request.getFeatureIdentifiers().add(filter.getValue());
     }
 
     /**

@@ -426,7 +426,7 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
         filterCapabilities.setComparisonOperators(comparisonOperators);
     }
 
-    private Collection<WfsFeatureType> getFeatureTypeList() throws OwsExceptionReport {
+    protected Collection<WfsFeatureType> getFeatureTypeList() throws OwsExceptionReport {
         String featureType = "observatons";
         WfsFeatureType wfsFeatureType = new WfsFeatureType(getName(featureType), getWfsCapabilitiesCrs(featureType));
         wfsFeatureType.setTitles(getTitles(featureType));
@@ -458,7 +458,7 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
     }
 
 
-    private WfsCapabilitiesCrs getWfsCapabilitiesCrs(String featureType) {
+    protected WfsCapabilitiesCrs getWfsCapabilitiesCrs(String featureType) {
         String defaultCrs = OGCConstants.URN_DEF_CRS_EPSG + this.geometryHandler.getDefaultResponseEPSG();
         return new WfsCapabilitiesCrs(defaultCrs);
     }

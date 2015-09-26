@@ -28,13 +28,16 @@
  */
 package org.n52.wfs.ds;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.inject.Inject;
+import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.n52.iceland.cache.ContentCache;
@@ -45,6 +48,7 @@ import org.n52.iceland.lifecycle.Constructable;
 import org.n52.iceland.lifecycle.Destroyable;
 import org.n52.iceland.ogc.gml.GmlConstants;
 import org.n52.iceland.ogc.gml.time.TimePeriod;
+import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.iceland.ogc.ows.OWSConstants;
 import org.n52.iceland.ogc.ows.OwsCapabilities;
 import org.n52.iceland.ogc.ows.OwsMetadata;
@@ -57,9 +61,13 @@ import org.n52.iceland.ogc.sos.SosConstants;
 import org.n52.iceland.response.GetCapabilitiesResponse;
 import org.n52.iceland.util.Constants;
 import org.n52.iceland.util.DateTimeHelper;
+import org.n52.iceland.util.http.MediaType;
+import org.n52.iceland.util.http.MediaTypes;
 import org.n52.ogc.wfs.WfsElement;
+import org.n52.ogc.wfs.WfsFeatureType;
 import org.n52.ogc.wfs.WfsValueList;
 import org.n52.sos.cache.SosContentCache;
+import org.n52.sos.ogc.om.features.SfConstants;
 import org.n52.sos.ogc.sos.SosEnvelope;
 import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.XmlHelper;
@@ -70,6 +78,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -148,4 +157,17 @@ public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler {
         return (InMemoryCacheImpl) getCacheController().getCache();
     }
     
+    @Override
+    protected Collection<WfsFeatureType> getFeatureTypeList() throws OwsExceptionReport {
+        Collection<WfsFeatureType> featureTypeList = super.getFeatureTypeList();
+        String featureType = "observatons";
+        WfsFeatureType wfsFeatureType = new WfsFeatureType(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE, getWfsCapabilitiesCrs(featureType));
+        wfsFeatureType.setTitles(Sets.newHashSet("Features for IMIS-IoT"));
+        wfsFeatureType.setAbstracts(Sets.newHashSet(""));
+        wfsFeatureType.setKeywords(Sets.newHashSet("features"));
+        wfsFeatureType.setOutputFormats(Sets.newHashSet(new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
+        wfsFeatureType.addWgs84BoundingBoxes(wgs84BoundingBoxes(featureType));
+        featureTypeList.add(wfsFeatureType);
+        return featureTypeList;
+    }
 }

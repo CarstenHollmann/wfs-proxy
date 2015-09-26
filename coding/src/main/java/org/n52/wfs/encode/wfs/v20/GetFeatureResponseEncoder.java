@@ -31,26 +31,26 @@ package org.n52.wfs.encode.wfs.v20;
 import java.math.BigInteger;
 import java.util.Map;
 
-import net.opengis.wfs.x20.FeatureCollectionDocument;
-import net.opengis.wfs.x20.FeatureCollectionType;
-
 import org.apache.xmlbeans.XmlObject;
-
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.gml.AbstractFeature;
 import org.n52.iceland.ogc.gml.GmlConstants;
 import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.iceland.ogc.ows.OWSConstants.HelperValues;
-import org.n52.ogc.wfs.OmObservationMember;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsFeatureCollection;
 import org.n52.ogc.wfs.WfsMember;
 import org.n52.sos.ogc.om.OmObservation;
+import org.n52.sos.ogc.om.features.SfConstants;
+import org.n52.sos.ogc.om.features.samplingFeatures.SamplingFeature;
 import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.XmlHelper;
 import org.n52.wfs.response.GetFeatureResponse;
 
 import com.google.common.collect.Maps;
+
+import net.opengis.wfs.x20.FeatureCollectionDocument;
+import net.opengis.wfs.x20.FeatureCollectionType;
 
 /**
  * WFS 2.0 GetFeature response encoder class
@@ -74,6 +74,7 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
         FeatureCollectionDocument xbFeatureCollectionDoc =
                 FeatureCollectionDocument.Factory.newInstance(getXmlOptions());
         FeatureCollectionType xbFeatureCollectionType = xbFeatureCollectionDoc.addNewFeatureCollection();
+        
         WfsFeatureCollection featureCollection = response.getFeatureCollection();
         xbFeatureCollectionType.setTimeStamp(featureCollection.getTimeStamp().toGregorianCalendar());
         xbFeatureCollectionType.setNumberMatched(featureCollection.getNumberMatched());
@@ -83,10 +84,10 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
         additionalValues.put(HelperValues.PROPERTY_TYPE, null);
         if (featureCollection.isSetMembers()) {
             for (WfsMember<?> member : featureCollection.getMember()) {
-                if (member instanceof OmObservationMember) {
-                    OmObservationMember observationMember = (OmObservationMember) member;
+                if (member instanceof WfsMember<?>) {
+                    WfsMember<?> wfsMember = (WfsMember<?>) member;
                     XmlObject encodeObjectToXml =
-                            CodingHelper.encodeObjectToXml(OmConstants.NS_OM_2, observationMember.getElement(),
+                            CodingHelper.encodeObjectToXml(getNamespace(wfsMember.getElement()), wfsMember.getElement(),
                                     additionalValues);
                     xbFeatureCollectionType.addNewMember().set(encodeObjectToXml);
                 }
@@ -108,6 +109,8 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
     private String getNamespace(AbstractFeature abstractFeature) {
         if (abstractFeature instanceof OmObservation) {
             return OmConstants.NS_OM_2;
+        } if (abstractFeature instanceof SamplingFeature) {
+            return SfConstants.NS_SAMS;
         }
         return GmlConstants.NS_GML_32;
     }

@@ -40,6 +40,7 @@ import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsQuery;
+import org.n52.sos.ogc.om.features.SfConstants;
 import org.n52.sos.request.operator.AbstractRequestOperator;
 import org.n52.wfs.ds.AbstractGetFeatureHandler;
 import org.n52.wfs.exception.wfs.concrete.MissingTypnameParameterException;
@@ -116,7 +117,7 @@ public class WfsGetFeatureOperatorV20 extends
     private void checkTypename(QName typeName, String parameterName) throws OwsExceptionReport {
         if (typeName == null) {
             throw new MissingTypnameParameterException();
-        } else if (!OmConstants.QN_OM_20_OBSERVATION.equals(typeName)) {
+        } else if (!(OmConstants.QN_OM_20_OBSERVATION.equals(typeName) || SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(typeName))) {
             throw new InvalidParameterValueException(parameterName, typeName.toString());
         }
     }

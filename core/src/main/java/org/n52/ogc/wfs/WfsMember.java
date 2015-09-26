@@ -28,6 +28,7 @@
  */
 package org.n52.ogc.wfs;
 
+import org.n52.iceland.ogc.gml.AbstractFeature;
 import org.n52.ogc.wfs.WfsConstants.State;
 
 /**
@@ -40,7 +41,7 @@ import org.n52.ogc.wfs.WfsConstants.State;
  * @param <T>
  *            element type
  */
-public interface WfsMember<T> {
+public interface WfsMember<T extends AbstractFeature> {
 
     /**
      * Get the state
