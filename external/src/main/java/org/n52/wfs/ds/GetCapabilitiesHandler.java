@@ -165,7 +165,7 @@ public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler {
         wfsFeatureType.setTitles(Sets.newHashSet("Features for IMIS-IoT"));
         wfsFeatureType.setAbstracts(Sets.newHashSet(""));
         wfsFeatureType.setKeywords(Sets.newHashSet("features"));
-        wfsFeatureType.setOutputFormats(Sets.newHashSet(new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
+        wfsFeatureType.setOutputFormats(Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
         wfsFeatureType.addWgs84BoundingBoxes(wgs84BoundingBoxes(featureType));
         featureTypeList.add(wfsFeatureType);
         return featureTypeList;

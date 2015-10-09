@@ -55,6 +55,10 @@
             <groupId>org.n52.sensorweb</groupId>
             <artifactId>52n-xml-wfs-v20</artifactId>
         </dependency>
+        <dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
     </dependencies>
 
 </project>

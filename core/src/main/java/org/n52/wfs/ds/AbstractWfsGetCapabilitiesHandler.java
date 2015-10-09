@@ -434,7 +434,8 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
         wfsFeatureType.setKeywords(getKeywods(featureType));
         wfsFeatureType.setOutputFormats(getOutputFormats(featureType));
         wfsFeatureType.addWgs84BoundingBoxes(wgs84BoundingBoxes(featureType));
-        wfsFeatureType.setExtendedDescription(extendedDescription(featureType));
+        // FIXME for testing Geoserver
+//        wfsFeatureType.setExtendedDescription(extendedDescription(featureType));
         return Sets.newHashSet(wfsFeatureType);
     }
 
@@ -464,7 +465,7 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
     }
 
     private Set<String> getOutputFormats(String featureType) {
-        return Sets.newHashSet(MediaTypes.APPLICATION_OM_20.toString());
+        return Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString());
     }
 
     private WfsExtendedDescription extendedDescription(String featureType) throws OwsExceptionReport {

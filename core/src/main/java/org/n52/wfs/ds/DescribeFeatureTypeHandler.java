@@ -39,7 +39,9 @@ import org.apache.commons.io.IOUtils;
 
 import org.n52.iceland.exception.CodedException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
+import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.ogc.wfs.WfsConstants;
+import org.n52.sos.ogc.om.features.SfConstants;
 import org.n52.wfs.exception.wfs.OperationProcessingFailedException;
 import org.n52.wfs.request.DescribeFeatureTypeRequest;
 import org.n52.wfs.response.DescribeFeatureTypeResponse;
@@ -78,7 +80,8 @@ public class DescribeFeatureTypeHandler extends AbstractDescribeFeatureTypeHandl
      */
     private String getFeatureTypeDescription(Set<QName> typeNames)
             throws OwsExceptionReport {
-        try (InputStream inputStream = getClass().getResourceAsStream("/observation.xsd")) {
+        String link = getTypeNameSchemaLink(typeNames);
+        try (InputStream inputStream = getClass().getResourceAsStream(link)) {
             StringWriter writer = new StringWriter();
             IOUtils.copy(inputStream, writer);
             return writer.toString();
@@ -86,6 +89,19 @@ public class DescribeFeatureTypeHandler extends AbstractDescribeFeatureTypeHandl
             throw new OperationProcessingFailedException().causedBy(ioe)
                     .withMessage("Error while reading featureType description!");
         }
+    }
+
+    private String getTypeNameSchemaLink(Set<QName> typeNames) {
+        for (QName qName : typeNames) {
+            if (qName.equals(OmConstants.QN_OM_20_OBSERVATION)) {
+                return "/observation.xsd";
+            } else if (qName.equals(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
+                return "/spatialSamplingFeature.xsd";
+            } else {
+                return "/feature.xsd";
+            }
+        }
+        return null;
     }
 
 }

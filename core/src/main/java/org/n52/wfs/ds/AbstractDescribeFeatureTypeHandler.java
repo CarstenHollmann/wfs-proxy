@@ -31,10 +31,14 @@ package org.n52.wfs.ds;
 import org.n52.iceland.exception.CodedException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.ows.OwsOperation;
+import org.n52.iceland.util.http.MediaType;
+import org.n52.iceland.util.http.MediaTypes;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.ds.AbstractOperationHandler;
 import org.n52.wfs.request.DescribeFeatureTypeRequest;
 import org.n52.wfs.response.DescribeFeatureTypeResponse;
+
+import com.google.common.collect.Sets;
 
 /**
  * Abstract WFS DescribeFeatureType DAO class
@@ -59,7 +63,9 @@ public abstract class AbstractDescribeFeatureTypeHandler extends AbstractOperati
     @Override
     protected void setOperationsMetadata(OwsOperation opsMeta, String service, String version)
             throws OwsExceptionReport {
-        // TODO Auto-generated method stub
+        opsMeta.addPossibleValuesParameter("outputFormat",
+                Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString(),
+                        new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
     }
 
     /**
