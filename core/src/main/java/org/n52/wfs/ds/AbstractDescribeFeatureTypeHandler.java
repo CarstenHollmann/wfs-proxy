@@ -64,8 +64,9 @@ public abstract class AbstractDescribeFeatureTypeHandler extends AbstractWfsOper
     protected void setOperationsMetadata(OwsOperation opsMeta, String service, String version)
             throws OwsExceptionReport {
         opsMeta.addPossibleValuesParameter("outputFormat",
-                Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString(),
-                        new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
+                Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.TEXT_XML.toString(),
+                        WfsConstants.TEXT_XML_SUBTYPE_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString(),
+                        WfsConstants.APPLICATION_SAMPLING_SPATILA_20.toString()));
     }
 
     /**

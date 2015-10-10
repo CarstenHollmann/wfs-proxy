@@ -465,7 +465,8 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
     }
 
     private Set<String> getOutputFormats(String featureType) {
-        return Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString());
+//        return Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString());
+        return Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString());
     }
 
     private WfsExtendedDescription extendedDescription(String featureType) throws OwsExceptionReport {

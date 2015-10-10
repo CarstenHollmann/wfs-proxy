@@ -38,6 +38,7 @@ import org.n52.iceland.ogc.OGCConstants;
 import org.n52.iceland.ogc.filter.FilterConstants;
 import org.n52.iceland.ogc.gml.GmlConstants;
 import org.n52.iceland.ogc.ows.OWSConstants;
+import org.n52.iceland.util.http.MediaType;
 import org.n52.iceland.util.http.MediaTypes;
 import org.n52.iceland.w3c.SchemaLocation;
 
@@ -70,7 +71,11 @@ public interface WfsConstants {
     String FILTER_LANGUAGE_WFS_PREFIX = OGCConstants.QUERY_LANGUAGE_PREFIX + "OGC-WFS::";
 
     String NUMBER_MATCHED_UNKNOWN = "unknown";
-
+    
+    MediaType APPLICATION_SAMPLING_SPATILA_20 = new MediaType("application", "samplingSpatial+xml", "version", "2.0");
+    
+    MediaType TEXT_XML_SUBTYPE_GML_32 = new MediaType("text", "xml", "subtype", "gml/3.2");
+    
     /**
      * default namespaces for WFS requests
      */

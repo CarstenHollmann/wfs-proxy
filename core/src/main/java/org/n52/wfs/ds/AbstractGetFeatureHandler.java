@@ -30,10 +30,15 @@ package org.n52.wfs.ds;
 
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.ows.OwsOperation;
+import org.n52.iceland.util.http.MediaType;
+import org.n52.iceland.util.http.MediaTypes;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.ds.AbstractOperationHandler;
+import org.n52.sos.wsdl.WSDLFactory;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
+
+import com.google.common.collect.Sets;
 
 /**
  * Abstract WFS GetFeature DAO class
@@ -43,21 +48,25 @@ import org.n52.wfs.response.GetFeatureResponse;
  * @since 1.0.0
  *
  */
-public abstract class AbstractGetFeatureHandler extends AbstractOperationHandler  {
+public abstract class AbstractGetFeatureHandler extends AbstractWfsOperationHandler {
 
     /**
      * constructor
      *
-     * @param service Service name
+     * @param service
+     *            Service name
      */
     public AbstractGetFeatureHandler(String service) {
         super(service, WfsConstants.Operations.GetFeature.name());
     }
 
     @Override
-    protected void setOperationsMetadata(OwsOperation opsMeta, String service, String version) throws OwsExceptionReport {
-        // TODO Auto-generated method stub
-
+    protected void setOperationsMetadata(OwsOperation opsMeta, String service, String version)
+            throws OwsExceptionReport {
+        opsMeta.addPossibleValuesParameter("outputFormat",
+                Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.TEXT_XML.toString(),
+                        WfsConstants.TEXT_XML_SUBTYPE_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString(),
+                        WfsConstants.APPLICATION_SAMPLING_SPATILA_20.toString()));
     }
 
     /**
