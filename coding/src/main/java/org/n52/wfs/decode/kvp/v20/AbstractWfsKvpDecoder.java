@@ -251,7 +251,7 @@ public abstract class AbstractWfsKvpDecoder implements
 
     @Setting(MiscSettings.SRS_NAME_PREFIX_SOS_V1)
     public void setSrsNamePrevixV1(String srsNamePrevixV1) {
-        this.srsNamePrevixV1 = CRSHelper.asUrnPrefix(srsNamePrefixV2);
+        this.srsNamePrevixV1 = CRSHelper.asUrnPrefix(srsNamePrevixV1);
     }
 
 
