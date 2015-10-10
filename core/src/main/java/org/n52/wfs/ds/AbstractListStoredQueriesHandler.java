@@ -43,7 +43,7 @@ import org.n52.wfs.response.ListStoredQueriesResponse;
  * @since 1.0.0
  *
  */
-public abstract class AbstractListStoredQueriesHandler extends AbstractOperationHandler {
+public abstract class AbstractListStoredQueriesHandler extends AbstractWfsOperationHandler {
 
     /**
      * constructor

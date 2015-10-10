@@ -50,7 +50,7 @@ import org.n52.wfs.response.GetCapabilitiesResponse;
  * @since 1.0.0
  *
  */
-public abstract class AbstractGetCapabilitiesHandler extends AbstractOperationHandler  {
+public abstract class AbstractGetCapabilitiesHandler extends AbstractWfsOperationHandler  {
 
     protected static final String FALSE = String.valueOf(false);
     protected static final String TRUE = String.valueOf(true);

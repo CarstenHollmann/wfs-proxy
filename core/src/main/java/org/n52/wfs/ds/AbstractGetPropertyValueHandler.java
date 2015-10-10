@@ -43,7 +43,7 @@ import org.n52.wfs.response.GetPropertyValueResponse;
  * @since 1.0.0
  *
  */
-public abstract class AbstractGetPropertyValueHandler extends AbstractOperationHandler {
+public abstract class AbstractGetPropertyValueHandler extends AbstractWfsOperationHandler {
 
     /**
      * constructor

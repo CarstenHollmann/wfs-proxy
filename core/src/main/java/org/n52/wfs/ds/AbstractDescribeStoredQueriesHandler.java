@@ -43,7 +43,7 @@ import org.n52.wfs.response.DescribeStoredQueriesResponse;
  * @since 1.0.0
  *
  */
-public abstract class AbstractDescribeStoredQueriesHandler extends AbstractOperationHandler {
+public abstract class AbstractDescribeStoredQueriesHandler extends AbstractWfsOperationHandler {
 
     /**
      * constructor

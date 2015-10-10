@@ -48,7 +48,7 @@ import com.google.common.collect.Sets;
  * @since 1.0.0
  *
  */
-public abstract class AbstractDescribeFeatureTypeHandler extends AbstractOperationHandler {
+public abstract class AbstractDescribeFeatureTypeHandler extends AbstractWfsOperationHandler {
 
     /**
      * constructor
