@@ -91,6 +91,9 @@ public class ListStoredQueriesKvpDecoder extends AbstractWfsKvpDecoder {
                 // namespaces (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdditionalCommonKeywordsParams.Namespaces.name())) {
                     request.setNamespaces(parseNamespaces(parameterValues));
+                 // FIX for Geoserver which uses invalid NAMESPACE parameter
+                } else if (parameterName.equalsIgnoreCase("Namespace")) {
+                    request.setNamespaces(parseNamespaces(parameterValues));
                 } else {
                     exceptions.add(new ParameterNotSupportedException(parameterName));
                 }

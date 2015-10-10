@@ -95,6 +95,10 @@ public class DescribeFeatureTypeKvpDecoder extends AbstractWfsKvpDecoder {
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdditionalCommonKeywordsParams.Namespaces.name())) {
                     request.setNamespaces(parseNamespaces(parameterValues));
                 }
+                // FIX for Geoserver which uses invalid NAMESPACE parameter
+                else if (parameterName.equalsIgnoreCase("Namespace")) {
+                    request.setNamespaces(parseNamespaces(parameterValues));
+                }
                 // typeName (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.DescribeFeatureTypeParams.TypeName.name())) {
                     qNameStringsForTypeName = KvpHelper.checkParameterMultipleValues(parameterValues, parameterName);

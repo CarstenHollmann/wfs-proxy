@@ -92,7 +92,10 @@ public class GetPropertyValueKvpDecoder extends AbstractWfsKvpDecoder {
                 // namespaces (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdditionalCommonKeywordsParams.Namespaces.name())) {
                     request.setNamespaces(parseNamespaces(parameterValues));
-                    // outputFormat (optional)
+                 // FIX for Geoserver which uses invalid NAMESPACE parameter
+                } else if (parameterName.equalsIgnoreCase("Namespace")) {
+                    request.setNamespaces(parseNamespaces(parameterValues));
+                // outputFormat (optional)
                 } else if (parameterName.equalsIgnoreCase(WfsConstants.StandardPresentationParams.OutputFormat.name())) {
                     KvpHelper.checkParameterSingleValue(parameterValues, parameterName);
 
