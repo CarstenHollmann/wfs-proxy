@@ -46,6 +46,8 @@ import org.n52.wfs.exception.wfs.OperationProcessingFailedException;
 import org.n52.wfs.request.DescribeFeatureTypeRequest;
 import org.n52.wfs.response.DescribeFeatureTypeResponse;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * WFS DAO class for DescribeFeatureType operation
  *
@@ -91,17 +93,27 @@ public class DescribeFeatureTypeHandler extends AbstractDescribeFeatureTypeHandl
         }
     }
 
-    private String getTypeNameSchemaLink(Set<QName> typeNames) {
+    @VisibleForTesting
+    protected String getTypeNameSchemaLink(Set<QName> typeNames) {
         for (QName qName : typeNames) {
-            if (qName.equals(OmConstants.QN_OM_20_OBSERVATION)) {
+            if (checkQNameOfType(qName, OmConstants.QN_OM_20_OBSERVATION)) {
                 return "/observation.xsd";
-            } else if (qName.equals(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
+            } else if (checkQNameOfType(qName, SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
                 return "/spatialSamplingFeature.xsd";
             } else {
                 return "/feature.xsd";
             }
         }
         return null;
+    }
+    
+    private boolean checkQNameOfType(QName toCheck, QName against) {
+        if (toCheck != null) {
+            if (!against.equals(toCheck)) {
+                return against.getLocalPart().equals(toCheck.getLocalPart());
+            }
+        }
+        return false;
     }
 
 }
