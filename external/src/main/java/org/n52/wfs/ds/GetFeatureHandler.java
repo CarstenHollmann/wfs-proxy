@@ -129,5 +129,25 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
         }
         throw new NoApplicableCodeException().withMessage("Error while querying GetCapabilities from SOS! Response is null!");
     }
+    
+    protected QName checkTypeName(QName typeName) {
+        if (checkQNameOfType(typeName, OmConstants.QN_OM_20_OBSERVATION)) {
+            return OmConstants.QN_OM_20_OBSERVATION;
+        } else if (checkQNameOfType(typeName, SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
+            return SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE;
+        }
+        return null;
+    }
+    
+    private boolean checkQNameOfType(QName toCheck, QName against) {
+        if (toCheck != null) {
+            if (against.equals(toCheck)) {
+                return true;
+            } else {
+                return against.getLocalPart().equals(toCheck.getLocalPart());
+            }
+        }
+        return false;
+    }
 
 }

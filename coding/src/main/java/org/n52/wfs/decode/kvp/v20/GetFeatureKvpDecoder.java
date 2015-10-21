@@ -125,6 +125,10 @@ public class GetFeatureKvpDecoder extends AbstractWfsKvpDecoder {
                 // typeNames (mandatory if ResourceId is not defined, optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdHocQueryParams.TypeNames.name())) {
                     typeNames = KvpHelper.checkParameterMultipleValues(parameterValues, parameterName);
+                } 
+                // typeName (mandatory if ResourceId is not defined, optional),  FIX for Geoserver
+                else if (parameterName.equalsIgnoreCase("typeName")) {
+                    typeNames = KvpHelper.checkParameterMultipleValues(parameterValues, WfsConstants.AdHocQueryParams.TypeNames.name());
                 }
                 // aliases (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdHocQueryParams.Aliases.name())) {
@@ -159,8 +163,8 @@ public class GetFeatureKvpDecoder extends AbstractWfsKvpDecoder {
                 // SortBy (optional)
                 else if (parameterName.equalsIgnoreCase(WfsConstants.AdHocQueryParams.SortBy.name())) {
                     sortBy = parseSortBy(KvpHelper.checkParameterMultipleValues(parameterValues, parameterName));
-                } else {
-                    exceptions.add(new ParameterNotSupportedException(parameterName));
+//                } else {
+//                    exceptions.add(new ParameterNotSupportedException(parameterName));
                 }
 
             } catch (OwsExceptionReport owse) {
@@ -234,8 +238,9 @@ public class GetFeatureKvpDecoder extends AbstractWfsKvpDecoder {
      *             If an error occurs
      */
     private Set<AbstractProjectionClause> parsePropertyNames(List<String> propertyNames) throws CodedException {
-        throw new OptionNotSupportedException().withMessage("The parameter '{}' is not supported",
-                WfsConstants.ProjectionClauseParams.PropertyName.name());
+//        throw new OptionNotSupportedException().withMessage("The parameter '{}' is not supported",
+//                WfsConstants.ProjectionClauseParams.PropertyName.name());
+        return Collections.emptySet();
     }
 
     /**

@@ -146,12 +146,12 @@ public abstract class AbstractWfsKvpDecoder implements
                                 Map<String, String> namespaces,
                                 String parameterName)
             throws OwsExceptionReport {
-        if (CollectionHelper.isEmpty(namespaces)) {
-            throw new MissingParameterValueException(AdditionalCommonKeywordsParams.Namespaces);
-        }
         String[] split = qnameString.split(Constants.COLON_STRING);
         if (split.length != 2) {
             throw new InvalidParameterValueException(parameterName, qnameString);
+        }
+        if (CollectionHelper.isEmpty(namespaces)) {
+           return new QName(split[1]);
         }
         return new QName(namespaces.get(split[0]), split[1], split[0]);
     }

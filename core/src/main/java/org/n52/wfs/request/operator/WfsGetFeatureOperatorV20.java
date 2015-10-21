@@ -117,8 +117,20 @@ public class WfsGetFeatureOperatorV20 extends
     private void checkTypename(QName typeName, String parameterName) throws OwsExceptionReport {
         if (typeName == null) {
             throw new MissingTypnameParameterException();
-        } else if (!(OmConstants.QN_OM_20_OBSERVATION.equals(typeName) || SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(typeName))) {
+        } else if (!checkQNameOfType(typeName, OmConstants.QN_OM_20_OBSERVATION) && !checkQNameOfType(typeName, SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
             throw new InvalidParameterValueException(parameterName, typeName.toString());
         }
+    }
+    
+    
+    private boolean checkQNameOfType(QName toCheck, QName against) {
+        if (toCheck != null) {
+            if (against.equals(toCheck)) {
+                return true;
+            } else {
+                return against.getLocalPart().equals(toCheck.getLocalPart());
+            }
+        }
+        return false;
     }
 }

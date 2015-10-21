@@ -109,7 +109,9 @@ public class DescribeFeatureTypeHandler extends AbstractDescribeFeatureTypeHandl
     
     private boolean checkQNameOfType(QName toCheck, QName against) {
         if (toCheck != null) {
-            if (!against.equals(toCheck)) {
+            if (against.equals(toCheck)) {
+                return true;
+            } else {
                 return against.getLocalPart().equals(toCheck.getLocalPart());
             }
         }
