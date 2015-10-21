@@ -65,6 +65,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.vividsolutions.jts.geom.Point;
 
 public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFeatureHandler {
     
@@ -362,14 +363,26 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
             if (sosResponse.getAbstractFeature() instanceof FeatureCollection) {
                 FeatureCollection collection = (FeatureCollection) sosResponse.getAbstractFeature();
                 for (AbstractFeature abstractFeature : collection.getMembers().values()) {
-                    featureCollection.addMember(new AbstractFeatureMember(abstractFeature));
+                    
+                    featureCollection.addMember(new AbstractFeatureMember(checkGeometry(abstractFeature)));
                 }
 //                collection.getMembers().values().stream().map(AbstractFeatureMember::new)
 //                .forEach(featureCollection::addMember);
             } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
-                featureCollection.addMember(new AbstractFeatureMember(sosResponse.getAbstractFeature()));
+                featureCollection.addMember(new AbstractFeatureMember(checkGeometry(sosResponse.getAbstractFeature())));
             }
         }
+    }
+
+    private AbstractFeature checkGeometry(AbstractFeature abstractFeature) {
+        if (abstractFeature != null && abstractFeature instanceof SamplingFeature && ((SamplingFeature)abstractFeature).isSetGeometry()) {
+            SamplingFeature feature = (SamplingFeature) abstractFeature;
+            if (feature.getGeometry() instanceof Point &&  feature.getGeometry().getSRID() == 4326) {
+                Point point = (Point)feature.getGeometry();
+                point.getCoordinate().z = Double.NaN;
+            }
+        }
+        return abstractFeature;
     }
 
     protected GetFeatureOfInterestRequest convertWfsGetFeatureToSosGetFeatureOfInterestRequest(GetFeatureRequest request) throws OwsExceptionReport {
