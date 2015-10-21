@@ -83,12 +83,15 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
         response.setFeatureCollection(featureCollection);
         for (WfsQuery wfsQuery : request.getQueries()) {
             for (QName typeName : wfsQuery.getTypeNames()) {
-                if (SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(typeName)) {
-                    GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
-                    convertSosGetFeatureOfInterestRequestToWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection);
-                } else if (OmConstants.QN_OM_20_OBSERVATION.equals(typeName)) {
-                    GetObservationRequest sosRequest = convertWfsGetFeatureToSosGetObservation(request);
-                    convertSosGetObservationToWfsGetFeature((GetObservationResponse) getGetObservationResponse(sosRequest), featureCollection);
+                QName checkedTypeName = checkTypeName(typeName);
+                if (checkedTypeName != null) {
+                    if (SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(checkedTypeName)) {
+                        GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
+                        convertSosGetFeatureOfInterestRequestToWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection);
+                    } else if (OmConstants.QN_OM_20_OBSERVATION.equals(checkedTypeName)) {
+                        GetObservationRequest sosRequest = convertWfsGetFeatureToSosGetObservation(request);
+                        convertSosGetObservationToWfsGetFeature((GetObservationResponse) getGetObservationResponse(sosRequest), featureCollection);
+                    }
                 }
             }
         }
