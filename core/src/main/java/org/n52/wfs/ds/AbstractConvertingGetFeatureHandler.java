@@ -374,7 +374,7 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
         }
     }
 
-    private AbstractFeature checkGeometry(AbstractFeature abstractFeature) {
+    protected AbstractFeature checkGeometry(AbstractFeature abstractFeature) {
         if (abstractFeature != null && abstractFeature instanceof SamplingFeature && ((SamplingFeature)abstractFeature).isSetGeometry()) {
             SamplingFeature feature = (SamplingFeature) abstractFeature;
             if (feature.getGeometry() instanceof Point &&  feature.getGeometry().getSRID() == 4326) {
@@ -401,6 +401,22 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
             bBox.setValueReference("om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape");
         }
         return bBox;
+    }
+    
+    protected SpatialFilter checkForSpatialFilter(GetFeatureRequest request, WfsQuery wfsQuery) {
+       if (request.isSetBBox()) {
+           return request.getBBox();
+       } else if (wfsQuery.isSetSelectionClause()) {
+           AbstractSelectionClause filter = wfsQuery.getSelectionClause();
+           if (filter instanceof SpatialFilter) {
+               return (SpatialFilter)filter;
+           }
+       }
+       return null;
+    }
+
+    protected boolean checkCount(int count, WfsFeatureCollection featureCollection) {
+        return count > 0 ?  featureCollection.getMember().size() <= count : true;
     }
 
     private void convertFilterForGetFeatureOfInteres(GetFeatureOfInterestRequest sosRequest,

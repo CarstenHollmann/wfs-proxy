@@ -30,6 +30,7 @@ package org.n52.wfs.encode.wfs.v20;
 
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
@@ -37,6 +38,9 @@ import org.n52.iceland.ogc.gml.AbstractFeature;
 import org.n52.iceland.ogc.gml.GmlConstants;
 import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.iceland.ogc.ows.OWSConstants.HelperValues;
+import org.n52.iceland.w3c.SchemaLocation;
+import org.n52.ogc.pilot.PilotConstants;
+import org.n52.ogc.pilot.PilotFeature;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsFeatureCollection;
 import org.n52.ogc.wfs.WfsMember;
@@ -98,6 +102,14 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
         }
         return xbFeatureCollectionDoc;
     }
+    
+    @Override
+    protected Set<SchemaLocation> getConcreteSchemaLocations() {
+        Set<SchemaLocation> schemaLocations = super.getConcreteSchemaLocations();
+        schemaLocations.add(GmlConstants.GML_32_SCHEMAL_LOCATION);
+        schemaLocations.add(PilotConstants.PILOT_SCHEMA_LOCATION);
+        return schemaLocations;
+    }
 
     /**
      * Get namespace for AbstractFeature
@@ -109,8 +121,10 @@ public class GetFeatureResponseEncoder extends AbstractWfsResponseEncoder<GetFea
     private String getNamespace(AbstractFeature abstractFeature) {
         if (abstractFeature instanceof OmObservation) {
             return OmConstants.NS_OM_2;
-        } if (abstractFeature instanceof SamplingFeature) {
+        } else if (abstractFeature instanceof SamplingFeature) {
             return SfConstants.NS_SAMS;
+        } else if (abstractFeature instanceof PilotFeature) {
+            return PilotConstants.NS_PILOT;
         }
         return GmlConstants.NS_GML_32;
     }

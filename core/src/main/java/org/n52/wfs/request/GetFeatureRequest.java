@@ -38,6 +38,7 @@ import org.n52.ogc.wfs.WfsQuery;
 import org.n52.sos.ogc.filter.SpatialFilter;
 import org.n52.wfs.response.GetFeatureResponse;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
 /**
@@ -63,6 +64,9 @@ public class GetFeatureRequest extends AbstractWfsServiceRequest<GetFeatureRespo
     private SpatialFilter bbox;
 
     private GetFeatureResponse response;
+    
+    private int count = 0;
+    
 
     public void setResponse(GetFeatureResponse response) {
         this.response = response;
@@ -258,6 +262,23 @@ public class GetFeatureRequest extends AbstractWfsServiceRequest<GetFeatureRespo
      */
     public String getOutputFormat() {
         return outputFormat;
+    }
+
+    /**
+     * @param count
+     * @return
+     */
+    public GetFeatureRequest setCount(int count) {
+        this.count = count;
+        return this;
+    }
+    
+    public int getCount() {
+         return count;
+    }
+    
+    public boolean isSetCount() {
+        return getCount() > 0;
     }
 
 }

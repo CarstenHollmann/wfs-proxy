@@ -38,6 +38,7 @@ import org.n52.iceland.coding.decode.DecoderKey;
 import org.n52.iceland.coding.decode.OperationDecoderKey;
 import org.n52.iceland.exception.CodedException;
 import org.n52.iceland.exception.ows.CompositeOwsException;
+import org.n52.iceland.exception.ows.InvalidParameterValueException;
 import org.n52.iceland.exception.ows.MissingParameterValueException;
 import org.n52.iceland.exception.ows.OptionNotSupportedException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
@@ -165,6 +166,14 @@ public class GetFeatureKvpDecoder extends AbstractWfsKvpDecoder {
                     sortBy = parseSortBy(KvpHelper.checkParameterMultipleValues(parameterValues, parameterName));
 //                } else {
 //                    exceptions.add(new ParameterNotSupportedException(parameterName));
+                }
+                else if (parameterName.equalsIgnoreCase(WfsConstants.StandardPresentationParams.Count.name())) {
+                    String count = KvpHelper.checkParameterSingleValue(parameterValues, parameterName);
+                    try {
+                        request.setCount(Integer.parseInt(count));
+                    } catch (NumberFormatException nfe) {
+                        throw new InvalidParameterValueException(parameterName, count);
+                    }
                 }
 
             } catch (OwsExceptionReport owse) {

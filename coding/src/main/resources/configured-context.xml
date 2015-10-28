@@ -50,4 +50,7 @@
 	<bean class="org.n52.wfs.encode.wfs.v20.GetPropertyValueResponseEncoder"/>
 	<bean class="org.n52.wfs.encode.wfs.v20.ListStoredQueriesResponseEncoder"/>
 	
+	<!-- Encoder implementations for PilotFeature -->
+	<bean class="org.n52.wfs.encode.pilot.PilotFeatureEncoder"/>
+	
 </beans>

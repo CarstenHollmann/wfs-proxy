@@ -28,24 +28,35 @@
  */
 package org.n52.wfs.ds;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
+import org.n52.iceland.exception.ows.concrete.InvalidSridException;
+import org.n52.iceland.ogc.gml.AbstractFeature;
 import org.n52.iceland.ogc.om.OmConstants;
 import org.n52.iceland.ogc.sos.Sos2Constants;
 import org.n52.iceland.util.http.MediaTypes;
+import org.n52.ogc.pilot.PilotConstants;
+import org.n52.ogc.pilot.PilotFeature;
+import org.n52.ogc.wfs.AbstractFeatureMember;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.ogc.wfs.WfsFeatureCollection;
 import org.n52.ogc.wfs.WfsQuery;
+import org.n52.sos.ogc.filter.SpatialFilter;
+import org.n52.sos.ogc.om.features.FeatureCollection;
 import org.n52.sos.ogc.om.features.SfConstants;
+import org.n52.sos.ogc.om.features.samplingFeatures.SamplingFeature;
 import org.n52.sos.request.GetFeatureOfInterestRequest;
 import org.n52.sos.request.GetObservationRequest;
 import org.n52.sos.response.GetFeatureOfInterestResponse;
 import org.n52.sos.response.GetObservationResponse;
 import org.n52.sos.util.CodingHelper;
+import org.n52.sos.util.GeometryHandler;
 import org.n52.sos.util.XmlHelper;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
@@ -53,6 +64,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 /**
  * WFS DAO class for GetFeature operation
@@ -82,10 +94,14 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                 new WfsFeatureCollection(new DateTime(), WfsConstants.NUMBER_MATCHED_UNKNOWN);
         response.setFeatureCollection(featureCollection);
         for (WfsQuery wfsQuery : request.getQueries()) {
+            SpatialFilter spatialFilter = checkForSpatialFilter(request, wfsQuery);
             for (QName typeName : wfsQuery.getTypeNames()) {
                 QName checkedTypeName = checkTypeName(typeName);
                 if (checkedTypeName != null) {
-                    if (SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(checkedTypeName)) {
+                    if (PilotConstants.QN_PILOT_PILOT_FEATURE.equals(checkedTypeName)) {
+                        GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
+                        convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection, request.getCount(), spatialFilter);
+                    } else if (SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(checkedTypeName)) {
                         GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
                         convertSosGetFeatureOfInterestRequestToWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection);
                     } else if (OmConstants.QN_OM_20_OBSERVATION.equals(checkedTypeName)) {
@@ -97,6 +113,56 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
         }
        
         return response;
+    }
+
+    private void convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature(
+            GetFeatureOfInterestResponse sosResponse, WfsFeatureCollection featureCollection, int count, SpatialFilter spatialFilter) throws InvalidSridException {
+        if (sosResponse.getAbstractFeature() != null) {
+            if (sosResponse.getAbstractFeature() instanceof FeatureCollection) {
+                FeatureCollection collection = (FeatureCollection) sosResponse.getAbstractFeature();
+                Iterator<AbstractFeature> iterator = collection.getMembers().values().iterator();
+                while (checkCount(count, featureCollection) && iterator.hasNext()) {
+                    AbstractFeature abstractFeature = (AbstractFeature) iterator.next();
+                    PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(abstractFeature));
+                    if (pilotFeature != null) {
+//                        if (spatialFilter != null) {
+//                            if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
+//                                featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
+//                            }
+//                        } else {
+                            featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
+//                        }
+                    }
+                }
+            } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
+                PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(sosResponse.getAbstractFeature()));
+                if (pilotFeature != null) {
+                    if (spatialFilter != null) {
+                        if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
+                            featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
+                        }
+                    } else {
+                        featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
+                    }
+                }
+            }
+        }
+        
+    }
+
+    private PilotFeature convertToPilotFeature(AbstractFeature abstractFeature) throws InvalidSridException {
+        if (abstractFeature instanceof SamplingFeature) {
+            PilotFeature pilotFeature =
+                    new PilotFeature(abstractFeature.getIdentifierCodeWithAuthority(), abstractFeature.getGmlId());
+            if (abstractFeature.isSetName()) {
+                pilotFeature.setName(abstractFeature.getName());
+            }
+            if (((SamplingFeature) abstractFeature).isSetGeometry()) {
+                pilotFeature.setGeometry(((SamplingFeature) abstractFeature).getGeometry());
+            }
+            return pilotFeature;
+        }
+        return null;
     }
 
     private GetFeatureOfInterestResponse getGetFeatureOfInterestRequestResponse(
@@ -138,6 +204,8 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
             return OmConstants.QN_OM_20_OBSERVATION;
         } else if (checkQNameOfType(typeName, SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
             return SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE;
+        } else if (checkQNameOfType(typeName, PilotConstants.QN_PILOT_PILOT_FEATURE)) {
+            return PilotConstants.QN_PILOT_PILOT_FEATURE;
         }
         return null;
     }

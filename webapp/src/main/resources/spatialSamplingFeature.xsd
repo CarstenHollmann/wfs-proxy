@@ -23,7 +23,7 @@
 	<!-- bring in other schemas -->
 	<import
 		namespace="http://www.opengis.net/gml/3.2"
-		schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+		schemaLocation="http://52north.org/files/sensorweb/area52/gml52N.xsd"/>
 	<import
 		namespace="http://www.isotc211.org/2005/gmd"
 		schemaLocation="http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd"/>

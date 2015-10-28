@@ -63,6 +63,7 @@ import org.n52.iceland.util.Constants;
 import org.n52.iceland.util.DateTimeHelper;
 import org.n52.iceland.util.http.MediaType;
 import org.n52.iceland.util.http.MediaTypes;
+import org.n52.ogc.pilot.PilotConstants;
 import org.n52.ogc.wfs.WfsElement;
 import org.n52.ogc.wfs.WfsFeatureType;
 import org.n52.ogc.wfs.WfsValueList;
@@ -160,15 +161,35 @@ public class GetCapabilitiesHandler extends AbstractWfsGetCapabilitiesHandler {
     @Override
     protected Collection<WfsFeatureType> getFeatureTypeList() throws OwsExceptionReport {
         Collection<WfsFeatureType> featureTypeList = super.getFeatureTypeList();
-        String featureType = "observatons";
-        WfsFeatureType wfsFeatureType = new WfsFeatureType(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE, getWfsCapabilitiesCrs(featureType));
+        featureTypeList.add(getObservationFeatureType());
+        featureTypeList.add(getPilotFeatureFeatureType());
+        return featureTypeList;
+    }
+    
+    private WfsFeatureType getPilotFeatureFeatureType() throws OwsExceptionReport {
+        String featureType = "pilotFeatures";
+        WfsFeatureType wfsFeatureType = new WfsFeatureType(PilotConstants.QN_PILOT_PILOT_FEATURE,
+                getWfsCapabilitiesCrs(featureType));
+        wfsFeatureType.setTitles(Sets.newHashSet("PilotFeatures for IMIS-IoT"));
+        wfsFeatureType.setAbstracts(Sets.newHashSet(""));
+        wfsFeatureType.setKeywords(Sets.newHashSet("pilot features"));
+        wfsFeatureType.setOutputFormats(Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString()));
+        wfsFeatureType.addWgs84BoundingBoxes(wgs84BoundingBoxes(featureType));
+        return wfsFeatureType;
+    }
+
+    private WfsFeatureType getObservationFeatureType() throws OwsExceptionReport {
+        String featureType = "spatialSampligFeatures";
+        WfsFeatureType wfsFeatureType = new WfsFeatureType(SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE,
+                getWfsCapabilitiesCrs(featureType));
         wfsFeatureType.setTitles(Sets.newHashSet("Features for IMIS-IoT"));
         wfsFeatureType.setAbstracts(Sets.newHashSet(""));
         wfsFeatureType.setKeywords(Sets.newHashSet("features"));
-//        wfsFeatureType.setOutputFormats(Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), new MediaType("application", "samplingSpatial+xml", "version", "2.0").toString()));
+        // wfsFeatureType.setOutputFormats(Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(),
+        // new MediaType("application", "samplingSpatial+xml", "version",
+        // "2.0").toString()));
         wfsFeatureType.setOutputFormats(Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString()));
         wfsFeatureType.addWgs84BoundingBoxes(wgs84BoundingBoxes(featureType));
-        featureTypeList.add(wfsFeatureType);
-        return featureTypeList;
+        return wfsFeatureType;
     }
 }

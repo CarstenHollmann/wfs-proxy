@@ -427,7 +427,7 @@ public abstract class AbstractWfsGetCapabilitiesHandler extends AbstractGetCapab
     }
 
     protected Collection<WfsFeatureType> getFeatureTypeList() throws OwsExceptionReport {
-        String featureType = "observatons";
+        String featureType = "observations";
         WfsFeatureType wfsFeatureType = new WfsFeatureType(getName(featureType), getWfsCapabilitiesCrs(featureType));
         wfsFeatureType.setTitles(getTitles(featureType));
         wfsFeatureType.setAbstracts(getAbstracts(featureType));

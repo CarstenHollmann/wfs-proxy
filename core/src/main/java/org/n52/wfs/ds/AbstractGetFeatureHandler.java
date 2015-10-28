@@ -65,6 +65,7 @@ public abstract class AbstractGetFeatureHandler extends AbstractWfsOperationHand
             throws OwsExceptionReport {
         opsMeta.addPossibleValuesParameter("outputFormat",
                 Sets.newHashSet(MediaTypes.APPLICATION_GML_32.toString(), MediaTypes.TEXT_XML.toString(),
+                        MediaTypes.TEXT_XML.toString() + ";charset=UTF-8",
                         WfsConstants.TEXT_XML_SUBTYPE_GML_32.toString(), MediaTypes.APPLICATION_OM_20.toString(),
                         WfsConstants.APPLICATION_SAMPLING_SPATILA_20.toString()));
     }

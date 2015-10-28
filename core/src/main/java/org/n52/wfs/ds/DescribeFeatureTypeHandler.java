@@ -40,6 +40,7 @@ import org.apache.commons.io.IOUtils;
 import org.n52.iceland.exception.CodedException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.om.OmConstants;
+import org.n52.ogc.pilot.PilotConstants;
 import org.n52.ogc.wfs.WfsConstants;
 import org.n52.sos.ogc.om.features.SfConstants;
 import org.n52.wfs.exception.wfs.OperationProcessingFailedException;
@@ -100,6 +101,8 @@ public class DescribeFeatureTypeHandler extends AbstractDescribeFeatureTypeHandl
                 return "/observation.xsd";
             } else if (checkQNameOfType(qName, SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE)) {
                 return "/spatialSamplingFeature.xsd";
+            } else if (checkQNameOfType(qName, PilotConstants.QN_PILOT_PILOT_FEATURE)) {
+                return "/pilotFeature.xsd";
             } else {
                 return "/feature.xsd";
             }
