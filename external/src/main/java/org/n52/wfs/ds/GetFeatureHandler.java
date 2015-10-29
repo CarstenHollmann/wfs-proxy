@@ -57,6 +57,7 @@ import org.n52.sos.response.GetFeatureOfInterestResponse;
 import org.n52.sos.response.GetObservationResponse;
 import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.GeometryHandler;
+import org.n52.sos.util.JTSHelper;
 import org.n52.sos.util.XmlHelper;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
@@ -125,13 +126,13 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                     AbstractFeature abstractFeature = (AbstractFeature) iterator.next();
                     PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(abstractFeature));
                     if (pilotFeature != null) {
-//                        if (spatialFilter != null) {
-//                            if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
-//                                featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
-//                            }
-//                        } else {
+                        if (spatialFilter != null) {
+                            if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
+                                featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
+                            }
+                        } else {
                             featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
-//                        }
+                        }
                     }
                 }
             } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
@@ -158,7 +159,11 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                 pilotFeature.setName(abstractFeature.getName());
             }
             if (((SamplingFeature) abstractFeature).isSetGeometry()) {
-                pilotFeature.setGeometry(((SamplingFeature) abstractFeature).getGeometry());
+                try {
+                    pilotFeature.setGeometry(JTSHelper.switchCoordinateAxisOrder(((SamplingFeature) abstractFeature).getGeometry()));
+                } catch (OwsExceptionReport e) {
+                    LOGGER.debug("Error while switching coordinate for feature: {}", abstractFeature.getIdentifier());
+                }
             }
             return pilotFeature;
         }
