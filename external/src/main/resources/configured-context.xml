@@ -35,6 +35,7 @@
 
     <bean id="getFeatureHandler" class="org.n52.wfs.ds.GetFeatureHandler"/>
     <bean id="wfsGetCapabilitiesHandler" class="org.n52.wfs.ds.GetCapabilitiesHandler"/>
+    <bean id="getFeatureOfInterestQuerier" class="org.n52.wfs.ds.GetFeatureOfInterestQuerier" depends-on="serviceConfiguration"/>
     
     <!-- <bean id="cacheFeederDao" class="org.n52.wfs.ds.WfsCacheFeederHandler"/> -->
 

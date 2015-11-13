@@ -28,16 +28,25 @@
  */
 package org.n52.wfs.cache;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.n52.iceland.cache.ContentCache;
 import org.n52.iceland.cache.WritableContentCache;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
+import org.n52.iceland.ogc.gml.AbstractFeature;
 import org.n52.iceland.ogc.ows.OwsCapabilities;
+import org.n52.iceland.util.CollectionHelper;
 
 public class InMemoryCacheImpl implements ContentCache, WritableContentCache {
 
     private static final long serialVersionUID = 7357861778543588998L;
     
     private OwsCapabilities owsCapabilities;
+    
+    private Set<AbstractFeature> abstractFeatures = newSynchronizedSet();
     
     public OwsCapabilities getCapabilities() throws OwsExceptionReport {
         return owsCapabilities;
@@ -46,7 +55,56 @@ public class InMemoryCacheImpl implements ContentCache, WritableContentCache {
     public void setOwsCapabilities(OwsCapabilities owsCapabilities) {
         this.owsCapabilities = owsCapabilities;
     }
+
+    /**
+     * @return the abstractFeatures
+     */
+    public Set<AbstractFeature> getAbstractFeatures() {
+        return copyOf(abstractFeatures);
+    }
+
+    /**
+     * @param abstractFeatures the abstractFeatures to set
+     */
+    public void setAbstractFeatures(Set<AbstractFeature> abstractFeatures) {
+        if (CollectionHelper.isNotEmpty(abstractFeatures)) {
+            this.abstractFeatures.clear();
+            this.abstractFeatures.addAll(abstractFeatures);
+        }
+    }
+
+    public boolean isSetAbstractFeatures() {
+        return CollectionHelper.isNotEmpty(getAbstractFeatures());
+    }
     
+    protected static <T> Set<T> newSynchronizedSet() {
+        return newSynchronizedSet(null);
+    }
+    
+    protected static <T> Set<T> newSynchronizedSet(Iterable<T> elements) {
+        if (elements == null) {
+            return CollectionHelper.synchronizedSet(0);
+        } else {
+            if (elements instanceof Collection) {
+                return Collections.synchronizedSet(new HashSet<T>((Collection<T>) elements));
+            } else {
+                HashSet<T> hashSet = new HashSet<T>();
+                for (T t : elements) {
+                    hashSet.add(t);
+                }
+                return Collections.synchronizedSet(hashSet);
+            }
+        }
+    }
+    
+    protected static <T> Set<T> copyOf(Set<T> set) {
+        if (set == null) {
+            return Collections.emptySet();
+        } else {
+            return Collections.unmodifiableSet(new HashSet<T>(set));
+        }
+    }
+
 }
 
 

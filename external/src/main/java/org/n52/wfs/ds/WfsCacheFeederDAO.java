@@ -35,13 +35,14 @@ import javax.inject.Inject;
 
 import org.n52.iceland.cache.WritableContentCache;
 import org.n52.iceland.coding.CodingRepository;
-import org.n52.iceland.coding.decode.DecoderRepository;
 import org.n52.iceland.exception.ows.NoApplicableCodeException;
 import org.n52.iceland.exception.ows.OwsExceptionReport;
 import org.n52.iceland.ogc.ows.OWSConstants;
 import org.n52.iceland.ogc.ows.OwsCapabilities;
+import org.n52.iceland.ogc.sos.Sos2Constants;
 import org.n52.iceland.ogc.sos.SosConstants;
 import org.n52.iceland.response.GetCapabilitiesResponse;
+import org.n52.sos.request.GetFeatureOfInterestRequest;
 import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.XmlHelper;
 import org.n52.wfs.cache.InMemoryCacheImpl;
@@ -57,9 +58,30 @@ public class WfsCacheFeederDAO implements WfsCacheFeederHandler {
     
     @Inject
     private CodingRepository codingReposiory;
+    
+    @Inject
+    private GetFeatureOfInterestQuerier getFeatureOfInterestQuerier;
 
     @Override
     public void updateCache(WritableContentCache cache) throws OwsExceptionReport {
+        updateOwsCapabilities(cache);
+        updateFeatures(cache);
+    }
+    
+    private void updateFeatures(WritableContentCache cache) throws OwsExceptionReport {
+        GetFeatureOfInterestRequest sosRequest = getGetFeatureRequest();
+        ((InMemoryCacheImpl)cache).setAbstractFeatures(getFeatureOfInterestQuerier.queryAndGetFeatures(sosRequest));
+    }
+    
+    
+    private GetFeatureOfInterestRequest getGetFeatureRequest() {
+        GetFeatureOfInterestRequest sosRequest = new GetFeatureOfInterestRequest();
+        sosRequest.setService(SosConstants.SOS);
+        sosRequest.setVersion(Sos2Constants.SERVICEVERSION);
+        return sosRequest;
+    }
+
+    private void updateOwsCapabilities(WritableContentCache cache) throws OwsExceptionReport {
         Object object =
                 CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(httpClientHandler.doGet(getParameter())));
         if (object instanceof GetCapabilitiesResponse) {
@@ -72,7 +94,7 @@ public class WfsCacheFeederDAO implements WfsCacheFeederHandler {
             throw new NoApplicableCodeException().withMessage("error");
         }
     }
-    
+
     private Map<String, List<String>> getParameter() {
         Map<String, List<String>> parameter = Maps.newHashMap();
         parameter.put(OWSConstants.GetCapabilitiesParams.service.name(), Lists.newArrayList(SosConstants.SOS));

@@ -28,7 +28,7 @@
  */
 package org.n52.wfs.ds;
 
-import java.util.Iterator;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.xml.namespace.QName;
@@ -59,6 +59,7 @@ import org.n52.sos.util.CodingHelper;
 import org.n52.sos.util.GeometryHandler;
 import org.n52.sos.util.JTSHelper;
 import org.n52.sos.util.XmlHelper;
+import org.n52.wfs.cache.InMemoryCacheImpl;
 import org.n52.wfs.request.GetFeatureRequest;
 import org.n52.wfs.response.GetFeatureResponse;
 import org.slf4j.Logger;
@@ -66,6 +67,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * WFS DAO class for GetFeature operation
@@ -81,6 +83,9 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
 
     @Inject
     private HttpClientHandler httpClientHandler;
+    
+    @Inject
+    private GetFeatureOfInterestQuerier getFeatureOfInterestQuerier;
 
     public GetFeatureHandler() {
         super(WfsConstants.WFS);
@@ -100,11 +105,25 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                 QName checkedTypeName = checkTypeName(typeName);
                 if (checkedTypeName != null) {
                     if (PilotConstants.QN_PILOT_PILOT_FEATURE.equals(checkedTypeName)) {
-                        GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
-                        convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection, request.getCount(), spatialFilter);
+                        Set<AbstractFeature> features = null;
+                        if (getWfsCache().isSetAbstractFeatures()) {
+                            features = getWfsCache().getAbstractFeatures();
+                        } else {
+                            GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
+                            GetFeatureOfInterestResponse getFeatureOfInterestRequestResponse = getFeatureOfInterestQuerier.getGetFeatureOfInterestRequestResponse(sosRequest);
+                            features = getFeatures(getFeatureOfInterestRequestResponse);
+                        }
+                        convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature(features, featureCollection, request.getCount(), spatialFilter);
                     } else if (SfConstants.QN_SAMS_20_SPATIAL_SAMPLING_FEATURE.equals(checkedTypeName)) {
-                        GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
-                        convertSosGetFeatureOfInterestRequestToWfsGetFeature((GetFeatureOfInterestResponse) getGetFeatureOfInterestRequestResponse(sosRequest), featureCollection);
+                        Set<AbstractFeature> features = null;
+                        if (getWfsCache().isSetAbstractFeatures()) {
+                            features = getWfsCache().getAbstractFeatures();
+                        } else {
+                            GetFeatureOfInterestRequest sosRequest = convertWfsGetFeatureToSosGetFeatureOfInterestRequest(request);
+                            GetFeatureOfInterestResponse getFeatureOfInterestRequestResponse = getFeatureOfInterestQuerier.getGetFeatureOfInterestRequestResponse(sosRequest);
+                            features = getFeatures(getFeatureOfInterestRequestResponse);
+                        }
+                        convertSosGetFeatureOfInterestRequestToWfsGetFeature(features, featureCollection);
                     } else if (OmConstants.QN_OM_20_OBSERVATION.equals(checkedTypeName)) {
                         GetObservationRequest sosRequest = convertWfsGetFeatureToSosGetObservation(request);
                         convertSosGetObservationToWfsGetFeature((GetObservationResponse) getGetObservationResponse(sosRequest), featureCollection);
@@ -112,31 +131,36 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                 }
             }
         }
-       
         return response;
     }
 
-    private void convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature(
-            GetFeatureOfInterestResponse sosResponse, WfsFeatureCollection featureCollection, int count, SpatialFilter spatialFilter) throws InvalidSridException {
+    private Set<AbstractFeature> getFeatures(GetFeatureOfInterestResponse sosResponse) {
+        Set<AbstractFeature> features = Sets.newHashSet();
         if (sosResponse.getAbstractFeature() != null) {
-            if (sosResponse.getAbstractFeature() instanceof FeatureCollection) {
-                FeatureCollection collection = (FeatureCollection) sosResponse.getAbstractFeature();
-                Iterator<AbstractFeature> iterator = collection.getMembers().values().iterator();
-                while (checkCount(count, featureCollection) && iterator.hasNext()) {
-                    AbstractFeature abstractFeature = (AbstractFeature) iterator.next();
-                    PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(abstractFeature));
-                    if (pilotFeature != null) {
-                        if (spatialFilter != null) {
-                            if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
-                                featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
-                            }
-                        } else {
-                            featureCollection.addMember(new AbstractFeatureMember(pilotFeature));
-                        }
-                    }
+            features.addAll(checkAndGet(sosResponse.getAbstractFeature()));
+        }
+        return features;
+    }
+    
+    private Set<AbstractFeature> checkAndGet(AbstractFeature feature) {
+        Set<AbstractFeature> features = Sets.newHashSet();
+        if (feature != null) {
+            if (feature instanceof FeatureCollection) {
+                for (AbstractFeature abstractFeature : ((FeatureCollection)feature).getMembers().values()) {
+                    features.addAll(checkAndGet(abstractFeature));
                 }
-            } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
-                PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(sosResponse.getAbstractFeature()));
+            } else if (feature instanceof SamplingFeature) {
+                features.add(feature);
+            }
+        }
+        return features;
+    }
+
+    private void convertSosGetFeatureOfInterestRequestToPilotFeaturesWfsGetFeature(
+            Set<AbstractFeature> features, WfsFeatureCollection featureCollection, int count, SpatialFilter spatialFilter) throws InvalidSridException {
+        for (AbstractFeature abstractFeature : features) {
+            if (abstractFeature instanceof SamplingFeature) {
+                PilotFeature pilotFeature = convertToPilotFeature(checkGeometry(abstractFeature));
                 if (pilotFeature != null) {
                     if (spatialFilter != null) {
                         if (GeometryHandler.getInstance().featureIsInFilter(pilotFeature.getGeometry(), Lists.newArrayList(spatialFilter.getGeometry()))) {
@@ -148,7 +172,6 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
                 }
             }
         }
-        
     }
 
     private PilotFeature convertToPilotFeature(AbstractFeature abstractFeature) throws InvalidSridException {
@@ -168,23 +191,6 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
             return pilotFeature;
         }
         return null;
-    }
-
-    private GetFeatureOfInterestResponse getGetFeatureOfInterestRequestResponse(
-            GetFeatureOfInterestRequest sosRequest) throws OwsExceptionReport {
-        String sosResponse = httpClientHandler.doPost(CodingHelper.encodeObjectToXml(Sos2Constants.NS_SOS_20, sosRequest).xmlText(),
-                MediaTypes.APPLICATION_XML);
-        if (!Strings.isNullOrEmpty(sosResponse)) {
-            LOGGER.debug("SOS response: {}", sosResponse);
-            Object object = CodingHelper.decodeXmlElement(XmlHelper.parseXmlString(sosResponse));
-            if (object instanceof GetFeatureOfInterestResponse) {
-                return (GetFeatureOfInterestResponse) object;
-            } else if (object instanceof OwsExceptionReport) {
-                throw new NoApplicableCodeException().causedBy((OwsExceptionReport)object).withMessage("error");
-            }
-            throw new NoApplicableCodeException().withMessage("Error while processing GetFeature!");
-        }
-        throw new NoApplicableCodeException().withMessage("Error while querying GetCapabilities from SOS! Response is null!");
     }
 
     private GetObservationResponse getGetObservationResponse(GetObservationRequest sosRequest)
@@ -226,4 +232,7 @@ public class GetFeatureHandler extends AbstractConvertingGetFeatureHandler {
         return false;
     }
 
+    private InMemoryCacheImpl getWfsCache() {
+        return (InMemoryCacheImpl) getCacheController().getCache();
+    }
 }

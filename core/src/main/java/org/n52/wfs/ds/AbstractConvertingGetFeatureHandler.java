@@ -358,18 +358,17 @@ public abstract class AbstractConvertingGetFeatureHandler extends AbstractGetFea
     }
     
     
-    protected void convertSosGetFeatureOfInterestRequestToWfsGetFeature(GetFeatureOfInterestResponse sosResponse, WfsFeatureCollection featureCollection) {
-        if (sosResponse.getAbstractFeature() != null) {
-            if (sosResponse.getAbstractFeature() instanceof FeatureCollection) {
-                FeatureCollection collection = (FeatureCollection) sosResponse.getAbstractFeature();
-                for (AbstractFeature abstractFeature : collection.getMembers().values()) {
-                    
-                    featureCollection.addMember(new AbstractFeatureMember(checkGeometry(abstractFeature)));
+    protected void convertSosGetFeatureOfInterestRequestToWfsGetFeature(Set<AbstractFeature> features, WfsFeatureCollection featureCollection) {
+        for (AbstractFeature feature : features) {
+            if (feature != null) {
+                if (feature instanceof FeatureCollection) {
+                    FeatureCollection collection = (FeatureCollection) feature;
+                    for (AbstractFeature abstractFeature : collection.getMembers().values()) {
+                        featureCollection.addMember(new AbstractFeatureMember(checkGeometry(abstractFeature)));
+                    }
+                } else if (feature instanceof SamplingFeature) {
+                    featureCollection.addMember(new AbstractFeatureMember(checkGeometry(feature)));
                 }
-//                collection.getMembers().values().stream().map(AbstractFeatureMember::new)
-//                .forEach(featureCollection::addMember);
-            } else if (sosResponse.getAbstractFeature() instanceof SamplingFeature) {
-                featureCollection.addMember(new AbstractFeatureMember(checkGeometry(sosResponse.getAbstractFeature())));
             }
         }
     }
